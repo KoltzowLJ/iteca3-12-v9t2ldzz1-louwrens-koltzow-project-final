@@ -1,0 +1,745 @@
+/* General Styles */
+:root {
+   --main-color: #2980b9;
+   --black: #444;
+   --white: #fff;
+   --light-bg: #f5f5f5;
+   --border: 0.2rem solid var(--black);
+   --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+body {
+   font-family: 'Nunito', sans-serif;
+   background-color: var(--light-bg);
+   margin: 0;
+   padding: 0;
+}
+
+ /* Header */
+ .header {
+   background-color: var(--white);
+   padding: 1rem 2rem;
+   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+   position: sticky;
+   top: 0;
+   z-index: 1000;
+ }
+ 
+ .header .flex {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+ }
+ 
+ .header .logo {
+   font-size: 2.5rem;
+   color: var(--black);
+ }
+ 
+ .header .logo span {
+   color: var(--main-color);
+ }
+ 
+ .header .navbar a {
+   margin: 0 1rem;
+   font-size: 1.8rem;
+   color: var(--black);
+   text-decoration: none;
+ }
+ 
+ .header .navbar a:hover {
+   color: var(--main-color);
+ }
+
+ .header .icons a {
+   margin-left: 1rem;
+   font-size: 1.8rem;
+   color: var(--black);
+   text-decoration: none;
+ }
+ 
+ .header .icons a:hover {
+   color: var(--main-color);
+ }
+ 
+ .message {
+   background-color: var(--main-color);
+   color: var(--white);
+   padding: 1rem;
+   margin-bottom: 1rem;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+ }
+ 
+ .message span {
+   font-size: 1.5rem;
+ }
+ 
+ .message i {
+   cursor: pointer;
+   font-size: 2rem;
+ }
+ 
+ .profile {
+   display: none;
+ }
+
+ .header .icons .fas {
+   font-size: 1.8rem;
+   color: var(--black);
+   cursor: pointer;
+}
+
+.profile {
+   position: absolute;
+   top: 60px;
+   right: 2rem;
+   background-color: var(--white);
+   padding: 1rem;
+   box-shadow: var(--box-shadow);
+   border-radius: 0.5rem;
+   display: none;
+   text-align: center;
+   width: 200px;
+}
+
+.profile.active {
+   display: block;
+}
+
+.profile p {
+   margin: 0;
+   font-size: 1.5rem;
+   color: var(--black);
+}
+
+.profile .btn,
+.profile .option-btn,
+.profile .delete-btn {
+   display: block;
+   margin: 0.5rem 0;
+   padding: 0.5rem 1rem;
+   text-align: center;
+   border-radius: 0.5rem;
+   color: var(--white);
+   background-color: var(--main-color);
+   text-decoration: none;
+}
+
+.profile .delete-btn {
+   background-color: #e74c3c;
+}
+
+.profile .btn:hover,
+.profile .option-btn:hover,
+.profile .delete-btn:hover {
+   background-color: var(--black);
+}
+
+.flex-btn {
+   display: flex;
+   flex-direction: column;
+   gap: 0.5rem;
+}
+
+/* Admin Accounts */
+
+.accounts {
+   padding: 2rem;
+}
+
+.accounts .heading {
+   text-align: center;
+   margin-bottom: 2rem;
+   font-size: 2rem;
+   color: var(--black);
+}
+
+.accounts .box-container {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+   gap: 1rem;
+}
+
+.accounts .box {
+   background-color: var(--white);
+   padding: 1rem;
+   box-shadow: var(--box-shadow);
+   border-radius: 0.5rem;
+   text-align: center;
+}
+
+.accounts .box p {
+   margin: 0.5rem 0;
+   font-size: 1.2rem;
+   color: var(--black);
+}
+
+.accounts .box .flex-btn {
+   display: flex;
+   justify-content: center;
+   gap: 0.5rem;
+}
+
+.accounts .option-btn,
+.accounts .delete-btn {
+   padding: 0.5rem 1rem;
+   border-radius: 0.5rem;
+   text-decoration: none;
+   color: var(--white);
+   background-color: var(--main-color);
+}
+
+.accounts .delete-btn {
+   background-color: #e74c3c;
+}
+
+.accounts .option-btn:hover,
+.accounts .delete-btn:hover {
+   background-color: var(--black);
+}
+
+.empty {
+   text-align: center;
+   font-size: 1.5rem;
+   color: var(--black);
+}
+
+
+/* Message Styles */
+.message {
+   background-color: #e74c3c;
+   color: var(--white);
+   padding: 1rem;
+   position: fixed;
+   top: 1rem;
+   left: 50%;
+   transform: translateX(-50%);
+   border-radius: 0.5rem;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width: 90%;
+   max-width: 600px;
+   box-shadow: var(--box-shadow);
+}
+
+.message span {
+   flex: 1;
+}
+
+.message i {
+   cursor: pointer;
+   margin-left: 1rem;
+}
+
+/* Form Container Styles */
+.form-container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-height: 100vh;
+   padding: 2rem;
+}
+
+.form-container form {
+   background-color: var(--white);
+   padding: 2rem;
+   border-radius: 0.5rem;
+   box-shadow: var(--box-shadow);
+   width: 100%;
+   max-width: 400px;
+   text-align: center;
+}
+
+.form-container form h3 {
+   margin-bottom: 1rem;
+   font-size: 2rem;
+   color: var(--black);
+}
+
+.form-container form p {
+   margin-bottom: 1rem;
+   font-size: 1rem;
+   color: var(--black);
+}
+
+.form-container form .box {
+   width: 100%;
+   padding: 0.8rem;
+   margin: 0.5rem 0;
+   border-radius: 0.5rem;
+   border: 1px solid var(--black);
+   outline: none;
+}
+
+.form-container form .btn {
+   width: 100%;
+   padding: 0.8rem;
+   border-radius: 0.5rem;
+   border: none;
+   background-color: var(--main-color);
+   color: var(--white);
+   font-size: 1rem;
+   cursor: pointer;
+   transition: background-color 0.3s;
+}
+
+.form-container form .btn:hover {
+   background-color: var(--black);
+}
+
+/* Dashboard Styles*/
+
+.dashboard {
+   padding: 2rem;
+}
+
+.dashboard .heading {
+   font-size: 2rem;
+   color: var(--black);
+   margin-bottom: 2rem;
+   text-align: center;
+}
+
+.dashboard .box-container {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr); /* Set to three columns */
+   gap: 2rem;
+}
+
+.dashboard .box {
+   background-color: var(--white);
+   padding: 2rem;
+   box-shadow: var(--box-shadow);
+   text-align: center;
+   border-radius: 0.5rem;
+}
+
+.dashboard .box h3 {
+   font-size: 2rem;
+   color: var(--black);
+   margin-bottom: 1rem;
+}
+
+.dashboard .box p {
+   font-size: 1.2rem;
+   color: var(--black);
+   margin-bottom: 1rem;
+}
+
+.dashboard .box .btn {
+   display: block;
+   padding: 0.5rem 1rem;
+   border-radius: 0.5rem;
+   color: var(--white);
+   background-color: var(--main-color);
+   text-decoration: none;
+}
+
+.dashboard .box .btn:hover {
+   background-color: var(--black);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+   .dashboard .box-container {
+      grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
+   }
+}
+
+@media (max-width: 480px) {
+   .dashboard .box-container {
+      grid-template-columns: 1fr; /* One column for small screens */
+   }
+}
+
+/* Messages Section Styles */
+.contacts {
+   padding: 2rem;
+}
+
+.contacts .heading {
+   font-size: 2rem;
+   color: var(--black);
+   margin-bottom: 2rem;
+   text-align: center;
+}
+
+.contacts .box-container {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 2rem;
+}
+
+.contacts .box {
+   background-color: var(--white);
+   padding: 2rem;
+   box-shadow: var(--box-shadow);
+   border-radius: 0.5rem;
+   text-align: left;
+}
+
+.contacts .box p {
+   font-size: 1rem;
+   color: var(--black);
+   margin-bottom: 0.5rem;
+}
+
+.contacts .box p span {
+   font-weight: bold;
+}
+
+.contacts .box .delete-btn {
+   display: block;
+   margin-top: 1rem;
+   padding: 0.5rem 1rem;
+   border-radius: 0.5rem;
+   color: var(--white);
+   background-color: #e74c3c;
+   text-decoration: none;
+   text-align: center;
+}
+
+.contacts .box .delete-btn:hover {
+   background-color: var(--black);
+}
+
+@media (max-width: 768px) {
+   .contacts .box-container {
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+@media (max-width: 480px) {
+   .contacts .box-container {
+      grid-template-columns: 1fr;
+   }
+}
+
+/* Orders Section Styles */
+.orders {
+   padding: 2rem;
+}
+
+.orders .heading {
+   font-size: 2rem;
+   color: var(--black);
+   margin-bottom: 2rem;
+   text-align: center;
+}
+
+.orders .box-container {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   gap: 2rem;
+}
+
+.orders .box {
+   background-color: var(--white);
+   padding: 2rem;
+   box-shadow: var(--box-shadow);
+   text-align: center;
+   border-radius: 0.5rem;
+}
+
+.orders .box p {
+   font-size: 1.2rem;
+   color: var(--black);
+   margin-bottom: 0.5rem;
+}
+
+.orders .box span {
+   font-weight: bold;
+   color: var(--main-color);
+}
+
+.orders .box form {
+   margin-top: 1rem;
+}
+
+.orders .box .select {
+   width: 100%;
+   padding: 0.5rem;
+   margin-bottom: 1rem;
+   border: var(--border);
+   border-radius: 0.5rem;
+}
+
+.orders .box .flex-btn {
+   display: flex;
+   justify-content: space-between;
+}
+
+.orders .box .option-btn,
+.orders .box .delete-btn {
+   padding: 0.5rem 1rem;
+   border-radius: 0.5rem;
+   color: var(--white);
+   background-color: var(--main-color);
+   text-decoration: none;
+   text-align: center;
+}
+
+.orders .box .delete-btn {
+   background-color: #e74c3c;
+}
+
+.orders .box .option-btn:hover,
+.orders .box .delete-btn:hover {
+   background-color: var(--black);
+}
+
+/* Add Products Section */
+.add-products {
+   padding: 2rem;
+}
+
+.add-products .heading {
+   font-size: 2rem;
+   color: var(--black);
+   margin-bottom: 2rem;
+   text-align: center;
+}
+
+.add-products .flex {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 2rem;
+}
+
+.add-products .inputBox {
+   flex: 1 1 300px;
+}
+
+.add-products .box {
+   width: 100%;
+   padding: 1rem;
+   margin-bottom: 1rem;
+}
+
+.add-products .btn {
+   display: block;
+   width: 100%;
+   padding: 1rem;
+   border: none;
+   background-color: var(--main-color);
+   color: var(--white);
+   border-radius: 0.5rem;
+   cursor: pointer;
+}
+
+.add-products .btn:hover {
+   background-color: var(--black);
+}
+
+/* Show Products Section */
+.show-products {
+   padding: 2rem;
+}
+
+.show-products .heading {
+   font-size: 2rem;
+   color: var(--black);
+   margin-bottom: 2rem;
+   text-align: center;
+}
+
+.show-products .box-container {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   gap: 2rem;
+}
+
+.show-products .box {
+   background-color: var(--white);
+   padding: 2rem;
+   box-shadow: var(--box-shadow);
+   text-align: center;
+   border-radius: 0.5rem;
+}
+
+.show-products .box img {
+   width: 200px; 
+   height: 200px; 
+   object-fit: cover; 
+}
+
+.show-products .box .name,
+.show-products .box .price,
+.show-products .box .details {
+   font-size: 1.2rem;
+   color: var(--black);
+   margin-bottom: 0.5rem;
+}
+
+.show-products .box .flex-btn {
+   display: flex;
+   justify-content: space-between;
+   gap: 1rem;
+}
+
+.show-products .box .option-btn,
+.show-products .box .delete-btn {
+   padding: 0.5rem 1rem;
+   border-radius: 0.5rem;
+   color: var(--white);
+   background-color: var(--main-color);
+   text-decoration: none;
+}
+
+.show-products .box .delete-btn {
+   background-color: #e74c3c;
+}
+
+.show-products .box .option-btn:hover,
+.show-products .box .delete-btn:hover {
+   background-color: var(--black);
+}
+
+/* Update Product Styles */
+.update-product .heading {
+   text-align: center;
+   font-size: 2rem;
+   color: var(--black);
+   margin-bottom: 2rem;
+}
+
+.update-product .box {
+   display: block;
+   width: 100%;
+   padding: 1rem;
+   margin-bottom: 1rem;
+   border: var(--border);
+   border-radius: 0.5rem;
+   font-size: 1rem;
+}
+
+.update-product .btn,
+.update-product .option-btn {
+   display: inline-block;
+   padding: 0.5rem 1rem;
+   margin-right: 1rem;
+   border-radius: 0.5rem;
+   color: var(--white);
+   background-color: var(--main-color);
+   text-decoration: none;
+   cursor: pointer;
+}
+
+.update-product .btn:hover,
+.update-product .option-btn:hover {
+   background-color: var(--black);
+}
+
+.image-container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-bottom: 2rem;
+}
+
+.image-container .main-image img {
+   width: 100%;
+   max-width: 300px;
+   margin-bottom: 1rem;
+}
+
+.image-container .sub-image img {
+   width: 100px;
+   margin-right: 1rem;
+}
+
+.image-container .sub-image {
+   display: flex;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+   .header .navbar {
+      display: none;
+   }
+
+   .header .navbar.active {
+      display: block;
+   }
+
+   .profile {
+      width: 150px;
+      right: 1rem;
+   }
+
+   .accounts .box-container {
+      grid-template-columns: repeat(2, 1fr);
+   }
+
+   .dashboard .box-container {
+      grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
+   }
+
+   .contacts .box-container {
+      grid-template-columns: repeat(2, 1fr);
+   }
+
+   .add-products .flex {
+      flex-direction: column;
+      align-items: center;
+   }
+
+   .show-products .box-container {
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+@media (max-width: 480px) {
+   .header .logo {
+      font-size: 2rem;
+   }
+
+   .header .icons .fas {
+      font-size: 1.5rem;
+   }
+
+   .message {
+      padding: 0.5rem;
+      font-size: 1rem;
+   }
+
+   .accounts .box-container {
+      grid-template-columns: 1fr;
+   }
+
+   .dashboard .box-container {
+      grid-template-columns: 1fr; /* One column for small screens */
+   }
+
+   .contacts .box-container {
+      grid-template-columns: 1fr;
+   }
+
+   .orders .box-container {
+      grid-template-columns: 1fr;
+   }
+
+   .show-products .box-container {
+      grid-template-columns: 1fr;
+   }
+
+   .add-products .flex {
+      flex-direction: column;
+   }
+
+   .add-products .inputBox {
+      flex: 1 1 100%;
+   }
+
+   .update-product .image-container {
+      align-items: center;
+   }
+
+   .update-product .image-container .sub-image img {
+      width: 80px;
+   }
+}
+
