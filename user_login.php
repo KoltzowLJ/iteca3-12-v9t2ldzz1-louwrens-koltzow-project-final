@@ -1,3 +1,37 @@
+<?php
+
+include 'components/connect.php';
+
+session_start();
+
+if(isset($_SESSION['user_id'])){
+   $user_id = $_SESSION['user_id'];
+}else{
+   $user_id = '';
+};
+
+if(isset($_POST['submit'])){
+
+   $email = $_POST['email'];
+   $email = filter_var($email, FILTER_SANITIZE_STRING);
+   $pass = sha1($_POST['pass']);
+   $pass = filter_var($pass, FILTER_SANITIZE_STRING);
+
+   $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ? AND password = ?");
+   $select_user->execute([$email, $pass]);
+   $row = $select_user->fetch(PDO::FETCH_ASSOC);
+
+   if($select_user->rowCount() > 0){
+      $_SESSION['user_id'] = $row['id'];
+      header('location:home.php');
+   }else{
+      $message[] = 'incorrect username or password!';
+   }
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,14 +51,16 @@
 <?php include 'components/user_header.php'; ?>
 
 <section class="form-container">
+
    <form action="" method="post">
-      <h3>Login Now</h3>
-      <input type="email" name="email" required placeholder="Enter your email" maxlength="50" class="box" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="password" name="pass" required placeholder="Enter your password" maxlength="20" class="box" oninput="this.value = this.value.replace(/\s/g, '')">
-      <input type="submit" value="Login Now" class="btn" name="submit">
-      <p>Don't have an account? <a href="user_register.php" class="option-btn">Register Now</a></p>
+      <h3>login now</h3>
+      <input type="email" name="email" required placeholder="enter your email" maxlength="50"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
+      <input type="password" name="pass" required placeholder="enter your password" maxlength="20"  class="box" oninput="this.value = this.value.replace(/\s/g, '')">
+      <input type="submit" value="login now" class="btn" name="submit">
+      <p>don't have an account?</p>
+      <a href="user_register.php" class="option-btn">register now</a>
    </form>
-   <p style="text-align: center; margin-top: 10px;">Admin? <a href="admin/admin_login.php" class="option-btn">Login</a></p>
+
 </section>
 
 <?php include 'components/footer.php'; ?>
