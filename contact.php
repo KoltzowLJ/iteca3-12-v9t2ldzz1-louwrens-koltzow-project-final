@@ -1,3 +1,34 @@
+<?php
+include 'components/connect.php';
+
+session_start();
+
+if(isset($_POST['name'], $_POST['email'], $_POST['number'], $_POST['msg'])){
+    $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $number = filter_var($_POST['number'], FILTER_SANITIZE_NUMBER_INT);
+    $message = filter_var($_POST['msg'], FILTER_SANITIZE_STRING);
+
+    // Email to be sent to the user
+    $to = $email;
+    $subject = "Contact Form Submission - SimplicityTech";
+    $body = "Hello $name,\n\nThank you for contacting us. We have received your message and will get back to you soon.\n\nYour Message:\n$message\n\nBest Regards,\nSimplicityTech Team";
+    $headers = "From: no-reply@simplicitytech.co.za";
+
+    // Email to be sent to SimplicityTech
+    $admin_email = "no-reply@simplicitytech.co.za";
+    $admin_subject = "New Contact Form Submission";
+    $admin_body = "Name: $name\nEmail: $email\nNumber: $number\nMessage: $message";
+    $admin_headers = "From: $email";
+
+    if(mail($to, $subject, $body, $headers) && mail($admin_email, $admin_subject, $admin_body, $admin_headers)){
+        $message[] = 'Your message has been sent successfully!';
+    } else {
+        $message[] = 'Failed to send your message. Please try again later.';
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,13 +47,21 @@
    
 <?php include 'components/user_header.php'; ?>
 
+<?php
+if (isset($message)) {
+    foreach ($message as $msg) {
+        echo '<div class="message"><span>' . htmlspecialchars($msg) . '</span><i class="fas fa-times" onclick="this.parentElement.remove();"></i></div>';
+    }
+}
+?>
+
 <section class="contact">
    <form action="" method="post">
-      <h3>Contact us</h3>
+      <h3>Contact Us</h3>
       <input type="text" name="name" placeholder="Enter your name" required maxlength="20" class="box">
       <input type="email" name="email" placeholder="Enter your email" required maxlength="50" class="box">
       <input type="number" name="number" placeholder="Enter your number" required onkeypress="if(this.value.length == 10) return false;" class="box">
-      <textarea name="msg" class="box" placeholder="Enter your message" cols="30" rows="10"></textarea>
+      <textarea name="msg" class="box" placeholder="Enter your message" cols="30" rows="10" required></textarea>
       <input type="submit" value="Send Message" class="btn">
    </form>
 </section>

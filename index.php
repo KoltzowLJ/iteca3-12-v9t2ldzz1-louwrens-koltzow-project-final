@@ -1,12 +1,31 @@
+<?php
+
+include 'components/connect.php';
+
+session_start();
+
+if(isset($_SESSION['user_id'])){
+   $user_id = $_SESSION['user_id'];
+}else{
+   $user_id = '';
+};
+
+include 'components/wishlist_cart.php';
+
+// Fetch products from the database
+$select_products = $conn->prepare("SELECT * FROM products LIMIT 6");
+$select_products->execute();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title> Home </title>
+   <title>Home</title>
 
-   <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -16,55 +35,41 @@
 
 
 <section class="home-products">
-   <h1 class="heading">Latest Products</h1>
-   <div class="products-grid">
-      <!-- Product 1 -->
-      <div class="product-card">
-         <img src="assets/images/product-1.jpg" alt="Product 1">
-         <div class="content">
-            <h3>Product 1</h3>
-            <p>This will be product 1.</p>
-            <div class="price">R111.99</div>
-            <a href="#" class="btn">Add to Cart</a>
-         </div>
-      </div>
-      <!-- Product 2 -->
-      <div class="product-card">
-         <img src="assets/images/product-2.jpg" alt="Product 2">
-         <div class="content">
-            <h3>Product 2</h3>
-            <p>This will be product 2.</p>
-            <div class="price">R111.99</div>
-            <a href="#" class="btn">Add to Cart</a>
-         </div>
-      </div>
-      <!-- Product 3 -->
-      <div class="product-card">
-         <img src="assets/images/product-3.jpg" alt="Product 3">
-         <div class="content">
-            <h3>Product 3</h3>
-            <p>This will be product 3.</p>
-            <div class="price">R111.99</div>
-            <a href="#" class="btn">Add to Cart</a>
-         </div>
-      </div>
-      <!-- Product 4 -->
-      <div class="product-card">
-         <img src="assets/images/product-4.jpg" alt="Product 4">
-         <div class="content">
-            <h3>Product 4</h3>
-            <p>This will be product 4.</p>
-            <div class="price">R111.99</div>
-            <a href="#" class="btn">Add to Cart</a>
-         </div>
-      </div>                        
-   </div>
+    <h1 class="heading">Latest Products</h1>
+    <div class="products-grid">
+        <?php
+        if ($select_products->rowCount() > 0) {
+            while ($fetch_product = $select_products->fetch(PDO::FETCH_ASSOC)) {
+        ?>
+        <div class="product-card">
+            <img src="assets/uploaded_images/<?= $fetch_product['image_01']; ?>" alt="<?= $fetch_product['name']; ?>">
+            <div class="content">
+                <h3><?= $fetch_product['name']; ?></h3>
+                <p><?= $fetch_product['details']; ?></p>
+                <div class="price">R<?= number_format($fetch_product['price'], 2); ?></div>
+                <form action="" method="post">
+                    <input type="hidden" name="pid" value="<?= $fetch_product['id']; ?>">
+                    <input type="hidden" name="name" value="<?= $fetch_product['name']; ?>">
+                    <input type="hidden" name="price" value="<?= $fetch_product['price']; ?>">
+                    <input type="hidden" name="image" value="<?= $fetch_product['image_01']; ?>">
+                    <button class="fas fa-heart" type="submit" name="add_to_wishlist"></button>
+                    <a href="quick_view.php?pid=<?= $fetch_product['id']; ?>" class="fas fa-eye"></a>
+                    <input type="number" name="qty" class="qty" min="1" max="99" onkeypress="if(this.value.length == 2) return false;" value="1">
+                    <input type="submit" value="Add to Cart" class="btn" name="add_to_cart">
+                </form>
+            </div>
+        </div>
+        <?php
+            }
+        } else {
+            echo '<p class="empty">No products added yet!</p>';
+        }
+        ?>
+    </div>
 </section>
-
 
 <?php include 'components/footer.php'; ?>
 
-<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 <script src="assets/js/script.js"></script>
 
 </body>

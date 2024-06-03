@@ -1,3 +1,18 @@
+<?php
+include 'components/connect.php';
+
+session_start();
+
+if(isset($_SESSION['user_id'])){
+   $user_id = $_SESSION['user_id'];
+} else {
+   $user_id = '';
+   header('location:user_login.php');
+   exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,33 +36,30 @@
    <h1 class="heading">Placed Orders</h1>
 
    <div class="box-container">
-      <!-- Example Order 1 -->
+      <?php
+      $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE user_id = ?");
+      $select_orders->execute([$user_id]);
+
+      if ($select_orders->rowCount() > 0) {
+         while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
+      ?>
       <div class="box">
-      <p>Placed on: <span>2023-04-25</span></p>
-         <p>Name: <span>Pierre Clear</span></p>
-         <p>Email: <span>pearre.clear@example.com</span></p>
-         <p>Number: <span>+27 12 345 6789</span></p>
-         <p>Address: <span>123 Nog Straat, Daar, South Africa</span></p>
-         <p>Payment Method: <span>Credit Card</span></p>
-         <p>Your Orders: <span>1 items</span></p>
-         <p>Total Price: <span>R111.99</span></p>
-         <p>Payment Status: <span style="color:green;">Completed</span></p>
+         <p>Placed on: <span><?= htmlspecialchars($fetch_orders['placed_on']); ?></span></p>
+         <p>Name: <span><?= htmlspecialchars($fetch_orders['name']); ?></span></p>
+         <p>Email: <span><?= htmlspecialchars($fetch_orders['email']); ?></span></p>
+         <p>Number: <span><?= htmlspecialchars($fetch_orders['number']); ?></span></p>
+         <p>Address: <span><?= htmlspecialchars($fetch_orders['flat'] . ', ' . $fetch_orders['street'] . ', ' . $fetch_orders['city'] . ', ' . $fetch_orders['state'] . ', ' . $fetch_orders['country']); ?></span></p>
+         <p>Payment Method: <span><?= htmlspecialchars($fetch_orders['method']); ?></span></p>
+         <p>Your Orders: <span><?= htmlspecialchars($fetch_orders['total_products']); ?> items</span></p>
+         <p>Total Price: <span>R<?= htmlspecialchars($fetch_orders['total_price']); ?></span></p>
+         <p>Payment Status: <span style="color:<?php if ($fetch_orders['payment_status'] == 'Completed') { echo 'green'; } else { echo 'red'; } ?>;"><?= htmlspecialchars($fetch_orders['payment_status']); ?></span></p>
       </div>
-
-      <!-- Example Order 2 -->
-      <div class="box">
-         <p>Placed on: <span>2023-04-25</span></p>
-         <p>Name: <span>Sally Pally</span></p>
-         <p>Email: <span>sally.pally@example.com</span></p>
-         <p>Number: <span>+27 12 345 6789</span></p>
-         <p>Address: <span>123 Skip Street, Sea, South Africa</span></p>
-         <p>Payment Method: <span>PayPal</span></p>
-         <p>Your Orders: <span>2 items</span></p>
-         <p>Total Price: <span>R223.98</span></p>
-         <p>Payment Status: <span style="color:red;">Pending</span></p>
-      </div>
-
-
+      <?php
+         }
+      } else {
+         echo '<p class="empty">No orders placed yet!</p>';
+      }
+      ?>
    </div>
 
 </section>

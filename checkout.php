@@ -1,3 +1,42 @@
+<?php
+include 'components/connect.php';
+
+session_start();
+
+if(isset($_SESSION['user_id'])){
+   $user_id = $_SESSION['user_id'];
+} else {
+   $user_id = '';
+   header('location:user_login.php');
+   exit();
+}
+
+if(isset($_POST['order'])) {
+   // Sanitize and validate inputs
+   $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+   $number = filter_var($_POST['number'], FILTER_SANITIZE_NUMBER_INT);
+   $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+   $method = filter_var($_POST['method'], FILTER_SANITIZE_STRING);
+   $flat = filter_var($_POST['flat'], FILTER_SANITIZE_STRING);
+   $street = filter_var($_POST['street'], FILTER_SANITIZE_STRING);
+   $city = filter_var($_POST['city'], FILTER_SANITIZE_STRING);
+   $state = filter_var($_POST['state'], FILTER_SANITIZE_STRING);
+   $country = filter_var($_POST['country'], FILTER_SANITIZE_STRING);
+   $pin_code = filter_var($_POST['pin_code'], FILTER_SANITIZE_NUMBER_INT);
+
+   // Insert order into database
+   $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, name, number, email, method, flat, street, city, state, country, pin_code) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+   $insert_order->execute([$user_id, $name, $number, $email, $method, $flat, $street, $city, $state, $country, $pin_code]);
+
+   // Clear the cart after placing the order
+   $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
+   $delete_cart->execute([$user_id]);
+
+   $message[] = 'Order placed successfully!';
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,10 +61,21 @@
       <h3>Your Orders</h3>
 
       <div class="display-orders">
-         <p>Product 1 <span>(R111.99 x 2)</span></p>
-         <p>Product 2 <span>(R111.99 x 1)</span></p>
-         <p>Product 3 <span>(R111.99 x 3)</span></p>
-         <div class="grand-total">Grand Total: <span>R671.94</span></div>
+         <?php
+         $grand_total = 0;
+         $select_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+         $select_cart->execute([$user_id]);
+         if ($select_cart->rowCount() > 0) {
+            while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
+               $total_price = $fetch_cart['price'] * $fetch_cart['quantity'];
+               $grand_total += $total_price;
+         ?>
+         <p><?= htmlspecialchars($fetch_cart['name']); ?> <span>(R<?= htmlspecialchars($fetch_cart['price']); ?> x <?= htmlspecialchars($fetch_cart['quantity']); ?>)</span></p>
+         <?php
+            }
+         }
+         ?>
+         <div class="grand-total">Grand Total: <span>R<?= htmlspecialchars($grand_total); ?></span></div>
       </div>
 
       <h3>Place Your Orders</h3>
