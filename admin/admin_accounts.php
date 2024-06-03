@@ -1,24 +1,3 @@
-<?php
-
-include '../components/connect.php';
-
-session_start();
-
-$admin_id = $_SESSION['admin_id'];
-
-if(!isset($admin_id)){
-   header('location:admin_login.php');
-}
-
-if(isset($_GET['delete'])){
-   $delete_id = $_GET['delete'];
-   $delete_admins = $conn->prepare("DELETE FROM `admins` WHERE id = ?");
-   $delete_admins->execute([$delete_id]);
-   header('location:admin_accounts.php');
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,46 +17,49 @@ if(isset($_GET['delete'])){
 <?php include '../components/admin_header.php'; ?>
 
 <section class="accounts">
-
-   <h1 class="heading">admin accounts</h1>
-
+   <h1 class="heading">Admin Accounts</h1>
    <div class="box-container">
 
-   <div class="box">
-      <p>add new admin</p>
-      <a href="register_admin.php" class="option-btn">register admin</a>
-   </div>
-
-   <?php
-      $select_accounts = $conn->prepare("SELECT * FROM `admins`");
-      $select_accounts->execute();
-      if($select_accounts->rowCount() > 0){
-         while($fetch_accounts = $select_accounts->fetch(PDO::FETCH_ASSOC)){   
-   ?>
-   <div class="box">
-      <p> admin id : <span><?= $fetch_accounts['id']; ?></span> </p>
-      <p> admin name : <span><?= $fetch_accounts['name']; ?></span> </p>
-      <div class="flex-btn">
-         <a href="admin_accounts.php?delete=<?= $fetch_accounts['id']; ?>" onclick="return confirm('delete this account?')" class="delete-btn">delete</a>
-         <?php
-            if($fetch_accounts['id'] == $admin_id){
-               echo '<a href="update_profile.php" class="option-btn">update</a>';
-            }
-         ?>
+      <div class="box">
+         <p>Add new admin</p>
+         <a href="register_admin.php" class="option-btn">Register Admin</a>
       </div>
-   </div>
-   <?php
-         }
-      }else{
-         echo '<p class="empty">no accounts available!</p>';
-      }
-   ?>
+
+      <!-- Example Admin Account 1 -->
+      <div class="box">
+         <p>Admin ID: <span>1</span></p>
+         <p>Admin Name: <span>Admin One</span></p>
+         <div class="flex-btn">
+            <a href="#" onclick="return confirm('delete this account?')" class="delete-btn">Delete</a>
+            <a href="update_profile.php" class="option-btn">Update</a>
+         </div>
+      </div>
+
+      <!-- Example Admin Account 2 -->
+      <div class="box">
+         <p>Admin ID: <span>2</span></p>
+         <p>Admin Name: <span>Admin Two</span></p>
+         <div class="flex-btn">
+            <a href="#" onclick="return confirm('delete this account?')" class="delete-btn">Delete</a>
+         </div>
+      </div>
+
+      <!-- Example Admin Account 3 -->
+      <div class="box">
+         <p>Admin ID: <span>3</span></p>
+         <p>Admin Name: <span>Admin Three</span></p>
+         <div class="flex-btn">
+            <a href="#" onclick="return confirm('delete this account?')" class="delete-btn">Delete</a>
+         </div>
+      </div>
+
+      <!-- Example Empty State -->
+      <p class="empty">No accounts available!</p>
 
    </div>
-
 </section>
 
-<script src="../assets/js/admin_script.js"></script>
+<script src="../js/admin_script.js"></script>
 
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
