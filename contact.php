@@ -3,6 +3,14 @@ include 'components/connect.php';
 
 session_start();
 
+if(isset($_SESSION['user_id'])){
+   $user_id = $_SESSION['user_id'];
+} else {
+   $user_id = '';
+   header('location:user_login.php');
+   exit();
+}
+
 if(isset($_POST['name'], $_POST['email'], $_POST['number'], $_POST['msg'])){
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
