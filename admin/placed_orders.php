@@ -1,8 +1,38 @@
+<?php
+include '../components/connect.php';
+session_start();
+
+if(!isset($_SESSION['admin_id'])){
+   header('location:admin_login.php');
+   exit();
+}
+
+$admin_id = $_SESSION['admin_id'];
+
+// Handle delete request
+if(isset($_GET['delete'])){
+   $delete_id = $_GET['delete'];
+   $delete_order = $conn->prepare("DELETE FROM `orders` WHERE id = ?");
+   $delete_order->execute([$delete_id]);
+   header('location:placed_orders.php');
+}
+
+// Handle update payment status request
+if(isset($_POST['update_payment'])){
+   $order_id = $_POST['order_id'];
+   $payment_status = $_POST['payment_status'];
+   $update_payment_status = $conn->prepare("UPDATE `orders` SET payment_status = ? WHERE id = ?");
+   $update_payment_status->execute([$payment_status, $order_id]);
+   header('location:placed_orders.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Placed Orders</title>
 
    <!-- Font Awesome CDN link -->
@@ -21,74 +51,39 @@
 
    <div class="box-container">
 
-      <!-- Example Order 1 -->
+      <?php
+      $select_orders = $conn->prepare("SELECT * FROM `orders`");
+      $select_orders->execute();
+      if($select_orders->rowCount() > 0){
+         while($fetch_order = $select_orders->fetch(PDO::FETCH_ASSOC)){
+      ?>
       <div class="box">
-         <p>Placed on: <span>2024-05-25</span></p>
-         <p>Name: <span>Sheen Been</span></p>
-         <p>Number: <span>+27 12 345 6789</span></p>
-         <p>Address: <span>123 Bar Street, Halloberg, South Africa</span></p>
-         <p>Total Products: <span>3</span></p>
-         <p>Total Price: <span>R335.97</span></p>
-         <p>Payment Method: <span>Credit Card</span></p>
+         <p>Placed on: <span><?= $fetch_order['placed_on']; ?></span></p>
+         <p>Name: <span><?= $fetch_order['name']; ?></span></p>
+         <p>Number: <span><?= $fetch_order['number']; ?></span></p>
+         <p>Address: <span><?= $fetch_order['address']; ?></span></p>
+         <p>Total Products: <span><?= $fetch_order['total_products']; ?></span></p>
+         <p>Total Price: <span>R<?= $fetch_order['total_price']; ?></span></p>
+         <p>Payment Method: <span><?= $fetch_order['method']; ?></span></p>
          <form action="" method="post">
-            <input type="hidden" name="order_id" value="1">
+            <input type="hidden" name="order_id" value="<?= $fetch_order['id']; ?>">
             <select name="payment_status" class="select">
-               <option selected disabled>Pending</option>
+               <option selected disabled><?= $fetch_order['payment_status']; ?></option>
                <option value="pending">Pending</option>
                <option value="completed">Completed</option>
             </select>
             <div class="flex-btn">
                <input type="submit" value="Update" class="option-btn" name="update_payment">
-               <a href="placed_orders.php?delete=1" class="delete-btn" onclick="return confirm('Delete this order?');">Delete</a>
+               <a href="placed_orders.php?delete=<?= $fetch_order['id']; ?>" class="delete-btn" onclick="return confirm('Delete this order?');">Delete</a>
             </div>
          </form>
       </div>
-
-      <!-- Example Order 2 -->
-      <div class="box">
-         <p>Placed on: <span>2024-05-24</span></p>
-         <p>Name: <span>Dane Bane</span></p>
-         <p>Number: <span>+27 12 345 6789</span></p>
-         <p>Address: <span>123 Far Street, Benoni, South Africa</span></p>
-         <p>Total Products: <span>5</span></p>
-         <p>Total Price: <span>R559.95</span></p>
-         <p>Payment Method: <span>PayPal</span></p>
-         <form action="" method="post">
-            <input type="hidden" name="order_id" value="2">
-            <select name="payment_status" class="select">
-               <option selected disabled>Completed</option>
-               <option value="pending">Pending</option>
-               <option value="completed">Completed</option>
-            </select>
-            <div class="flex-btn">
-               <input type="submit" value="Update" class="option-btn" name="update_payment">
-               <a href="placed_orders.php?delete=2" class="delete-btn" onclick="return confirm('Delete this order?');">Delete</a>
-            </div>
-         </form>
-      </div>
-
-      <!-- Example Order 3 -->
-      <div class="box">
-         <p>Placed on: <span>2024-05-23</span></p>
-         <p>Name: <span>Mon Som</span></p>
-         <p>Number: <span>+27 12 345 6789</span></p>
-         <p>Address: <span>123 Balloon Street, Clowntown, South Africa</span></p>
-         <p>Total Products: <span>2</span></p>
-         <p>Total Price: <span>R223.98</span></p>
-         <p>Payment Method: <span>Cash on Delivery</span></p>
-         <form action="" method="post">
-            <input type="hidden" name="order_id" value="3">
-            <select name="payment_status" class="select">
-               <option selected disabled>Pending</option>
-               <option value="pending">Pending</option>
-               <option value="completed">Completed</option>
-            </select>
-            <div class="flex-btn">
-               <input type="submit" value="Update" class="option-btn" name="update_payment">
-               <a href="placed_orders.php?delete=3" class="delete-btn" onclick="return confirm('Delete this order?');">Delete</a>
-            </div>
-         </form>
-      </div>
+      <?php
+         }
+      } else {
+         echo '<p class="empty">No orders available!</p>';
+      }
+      ?>
 
    </div>
 

@@ -1,3 +1,23 @@
+<?php
+include '../components/connect.php';
+session_start();
+
+if(!isset($_SESSION['admin_id'])){
+   header('location:admin_login.php');
+   exit();
+}
+
+$admin_id = $_SESSION['admin_id'];
+
+// Handle delete request
+if(isset($_GET['delete'])){
+   $delete_id = $_GET['delete'];
+   $delete_message = $conn->prepare("DELETE FROM `messages` WHERE id = ?");
+   $delete_message->execute([$delete_id]);
+   header('location:messages.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,35 +42,26 @@
 
    <div class="box-container">
 
-      <!-- Example Message 1 -->
+      <?php
+      $select_messages = $conn->prepare("SELECT * FROM `messages`");
+      $select_messages->execute();
+      if($select_messages->rowCount() > 0){
+         while($fetch_message = $select_messages->fetch(PDO::FETCH_ASSOC)){
+      ?>
       <div class="box">
-         <p> user id : <span>1</span></p>
-         <p> name : <span>Danie Vanie</span></p>
-         <p> email : <span>danie.vanie@example.com</span></p>
-         <p> number : <span>+27 12 345 6789</span></p>
-         <p> message : <span>Hello, I have a question about...</span></p>
-         <a href="messages.php?delete=1" onclick="return confirm('delete this message?');" class="delete-btn">Delete</a>
+         <p> user id : <span><?= $fetch_message['user_id']; ?></span></p>
+         <p> name : <span><?= $fetch_message['name']; ?></span></p>
+         <p> email : <span><?= $fetch_message['email']; ?></span></p>
+         <p> number : <span><?= $fetch_message['number']; ?></span></p>
+         <p> message : <span><?= $fetch_message['message']; ?></span></p>
+         <a href="messages.php?delete=<?= $fetch_message['id']; ?>" onclick="return confirm('delete this message?');" class="delete-btn">Delete</a>
       </div>
-
-      <!-- Example Message 2 -->
-      <div class="box">
-         <p> user id : <span>2</span></p>
-         <p> name : <span>Stollie Mollie</span></p>
-         <p> email : <span>stollie.mollie@example.com</span></p>
-         <p> number : <span>+27 12 345 6789</span></p>
-         <p> message : <span>I need help with my order...</span></p>
-         <a href="messages.php?delete=2" onclick="return confirm('delete this message?');" class="delete-btn">Delete</a>
-      </div>
-
-      <!-- Example Message 3 -->
-      <div class="box">
-         <p> user id : <span>3</span></p>
-         <p> name : <span>Bor Tor</span></p>
-         <p> email : <span>bor.tor@example.com</span></p>
-         <p> number : <span>+27 12 345 6789</span></p>
-         <p> message : <span>Can you provide more details about...</span></p>
-         <a href="messages.php?delete=3" onclick="return confirm('delete this message?');" class="delete-btn">Delete</a>
-      </div>
+      <?php
+         }
+      } else {
+         echo '<p class="empty">No messages available!</p>';
+      }
+      ?>
 
    </div>
 

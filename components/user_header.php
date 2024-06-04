@@ -50,7 +50,7 @@ if (isset($message)) {
             ?>
             <a href="wishlist.php"><i class="fas fa-heart"></i><span>(<?= htmlspecialchars($total_wishlist_counts); ?>)</span></a>
             <a href="cart.php"><i class="fas fa-shopping-cart"></i><span>(<?= htmlspecialchars($total_cart_counts); ?>)</span></a>
-            <div id="user-btn" class="fas fa-user" onclick="toggleProfile()"></div>
+            <a href="#" id="user-btn"><i class="fas fa-user"></i></a>
         </div>
 
         <div class="profile">
@@ -97,6 +97,16 @@ if (isset($message)) {
         </div>
     </section>
 </header>
+
+<script>
+function toggleProfile() {
+    const profile = document.querySelector('.profile');
+    profile.classList.toggle('active');
+}
+
+document.getElementById('user-btn').addEventListener('click', toggleProfile);
+</script>
+
 
 <script>
 function toggleProfile() {
