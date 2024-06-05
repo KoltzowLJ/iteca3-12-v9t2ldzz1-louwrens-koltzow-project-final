@@ -1,6 +1,11 @@
 <?php
+// Initialize the $message variable as an array if it is not already set
+if (!isset($message)) {
+    $message = [];
+}
+
 // Display messages
-if (isset($message)) {
+if (!empty($message)) {
     foreach ($message as $msg) {
         echo '
         <div class="message">
@@ -105,12 +110,4 @@ function toggleProfile() {
 }
 
 document.getElementById('user-btn').addEventListener('click', toggleProfile);
-</script>
-
-
-<script>
-function toggleProfile() {
-    const profile = document.querySelector('.profile');
-    profile.classList.toggle('active');
-}
 </script>

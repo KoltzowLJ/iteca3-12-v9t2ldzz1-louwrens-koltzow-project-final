@@ -23,10 +23,26 @@ if(isset($_POST['order'])) {
    $state = filter_var($_POST['state'], FILTER_SANITIZE_STRING);
    $country = filter_var($_POST['country'], FILTER_SANITIZE_STRING);
    $pin_code = filter_var($_POST['pin_code'], FILTER_SANITIZE_NUMBER_INT);
+   
+   $address = $flat . ', ' . $street . ', ' . $city . ', ' . $state . ', ' . $country . ', ' . $pin_code;
+
+   // Fetch cart items to get total products and price
+   $select_cart = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+   $select_cart->execute([$user_id]);
+
+   $total_products = '';
+   $total_price = 0;
+   if ($select_cart->rowCount() > 0) {
+      while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
+         $total_products .= $fetch_cart['name'] . ' (' . $fetch_cart['quantity'] . '), ';
+         $total_price += $fetch_cart['price'] * $fetch_cart['quantity'];
+      }
+      $total_products = rtrim($total_products, ', ');
+   }
 
    // Insert order into database
-   $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, name, number, email, method, flat, street, city, state, country, pin_code) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-   $insert_order->execute([$user_id, $name, $number, $email, $method, $flat, $street, $city, $state, $country, $pin_code]);
+   $insert_order = $conn->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price) VALUES(?,?,?,?,?,?,?,?)");
+   $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $total_price]);
 
    // Clear the cart after placing the order
    $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
@@ -34,7 +50,6 @@ if(isset($_POST['order'])) {
 
    $message[] = 'Order placed successfully!';
 }
-
 ?>
 
 <!DOCTYPE html>

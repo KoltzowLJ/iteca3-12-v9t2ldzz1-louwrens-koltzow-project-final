@@ -1,14 +1,20 @@
 <?php
-   if(isset($message)){
-      foreach($message as $message){
-         echo '
-         <div class="message">
-            <span>'.$message.'</span>
+// Initialize the $message variable as an array if it is not already set
+if (!isset($message)) {
+    $message = [];
+}
+
+// Display messages
+if (!empty($message)) {
+    foreach ($message as $msg) {
+        echo '
+        <div class="message">
+            <span>' . htmlspecialchars($msg) . '</span>
             <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-         </div>
-         ';
-      }
-   }
+        </div>
+        ';
+    }
+}
 ?>
 
 <header class="header">

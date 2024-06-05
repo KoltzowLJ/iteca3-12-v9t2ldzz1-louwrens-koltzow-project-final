@@ -48,11 +48,11 @@ if(isset($_SESSION['user_id'])){
          <p>Name: <span><?= htmlspecialchars($fetch_orders['name']); ?></span></p>
          <p>Email: <span><?= htmlspecialchars($fetch_orders['email']); ?></span></p>
          <p>Number: <span><?= htmlspecialchars($fetch_orders['number']); ?></span></p>
-         <p>Address: <span><?= htmlspecialchars($fetch_orders['flat'] . ', ' . $fetch_orders['street'] . ', ' . $fetch_orders['city'] . ', ' . $fetch_orders['state'] . ', ' . $fetch_orders['country']); ?></span></p>
+         <p>Address: <span><?= htmlspecialchars($fetch_orders['address']); ?></span></p>
          <p>Payment Method: <span><?= htmlspecialchars($fetch_orders['method']); ?></span></p>
-         <p>Your Orders: <span><?= htmlspecialchars($fetch_orders['total_products']); ?> items</span></p>
+         <p>Your Orders: <span><?= htmlspecialchars($fetch_orders['total_products']); ?></span></p>
          <p>Total Price: <span>R<?= htmlspecialchars($fetch_orders['total_price']); ?></span></p>
-         <p>Payment Status: <span style="color:<?php if ($fetch_orders['payment_status'] == 'Completed') { echo 'green'; } else { echo 'red'; } ?>;"><?= htmlspecialchars($fetch_orders['payment_status']); ?></span></p>
+         <p>Payment Status: <span style="color:<?php if ($fetch_orders['payment_status'] == 'paid') { echo 'green'; } else { echo 'red'; } ?>;"><?= htmlspecialchars($fetch_orders['payment_status']); ?></span></p>
       </div>
       <?php
          }
