@@ -4,17 +4,17 @@ include 'components/connect.php';
 
 session_start();
 
-if(isset($_SESSION['user_id'])){
-   $user_id = $_SESSION['user_id'];
+if(isset($_SESSION['unique_user_id'])){
+   $unique_user_id = $_SESSION['unique_user_id'];
 }else{
-   $user_id = '';
+   $unique_user_id = '';
 };
 
 include 'components/wishlist_cart.php';
 
-// Fetch products from the database
-$select_products = $conn->prepare("SELECT * FROM products LIMIT 6");
-$select_products->execute();
+// Fetch unique products from the database
+$get_unique_products = $conn->prepare("SELECT * FROM products LIMIT 6");
+$get_unique_products->execute();
 
 ?>
 
@@ -38,22 +38,28 @@ $select_products->execute();
     <h1 class="heading">Latest Products</h1>
     <div class="products-grid">
         <?php
-        if ($select_products->rowCount() > 0) {
-            while ($fetch_product = $select_products->fetch(PDO::FETCH_ASSOC)) {
+        if ($get_unique_products->rowCount() > 0) {
+            while ($unique_product = $get_unique_products->fetch(PDO::FETCH_ASSOC)) {
         ?>
         <div class="product-card">
-            <img src="assets/uploaded_images/<?= $fetch_product['image_01']; ?>" alt="<?= $fetch_product['name']; ?>">
+            <img src="assets/uploaded_images/<?= $unique_product['image_01']; ?>" alt="<?= $unique_product['name']; ?>">
             <div class="content">
-                <h3><?= $fetch_product['name']; ?></h3>
-                <p><?= $fetch_product['details']; ?></p>
-                <div class="price">R<?= number_format($fetch_product['price'], 2); ?></div>
+                <h3><?= $unique_product['name']; ?></h3>
+                <p><?= $unique_product['details']; ?></p>
+                <div class="price">R<?= number_format($unique_product['price'], 2); ?></div>
                 <form action="" method="post">
-                    <input type="hidden" name="pid" value="<?= $fetch_product['id']; ?>">
-                    <input type="hidden" name="name" value="<?= $fetch_product['name']; ?>">
-                    <input type="hidden" name="price" value="<?= $fetch_product['price']; ?>">
-                    <input type="hidden" name="image" value="<?= $fetch_product['image_01']; ?>">
+                    <input type="hidden" name="pid" value="<?= $unique_product['id']; ?>">
+                    <input type="hidden" name="name" value="<?= $unique_product['name']; ?>">
+                    <input type="hidden" name="price" value="<?= $unique_product['price']; ?>">
+                    <input type="hidden" name="image_01" value="<?= $unique_product['image_01']; ?>">
+                    <?php if (!empty($unique_product['image_02'])): ?>
+                        <input type="hidden" name="image_02" value="<?= $unique_product['image_02']; ?>">
+                    <?php endif; ?>
+                    <?php if (!empty($unique_product['image_03'])): ?>
+                        <input type="hidden" name="image_03" value="<?= $unique_product['image_03']; ?>">
+                    <?php endif; ?>
                     <button class="fas fa-heart" type="submit" name="add_to_wishlist"></button>
-                    <a href="quick_view.php?pid=<?= $fetch_product['id']; ?>" class="fas fa-eye"></a>
+                    <a href="product_view_detail.php?pid=<?= $unique_product['id']; ?>" class="fas fa-eye"></a>
                     <input type="number" name="qty" class="qty" min="1" max="99" onkeypress="if(this.value.length == 2) return false;" value="1">
                     <input type="submit" value="Add to Cart" class="btn" name="add_to_cart">
                 </form>

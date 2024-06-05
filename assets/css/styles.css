@@ -170,11 +170,12 @@ body {
   }
 }
 
+/* Product Card Styles */
 .product-card {
   background-color: var(--white);
   padding: 1.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   text-align: center;
 }
 
@@ -210,10 +211,42 @@ body {
   text-decoration: none;
   font-size: 1.6rem;
   cursor: pointer;
+  display: inline-block;
+  margin-top: 0.5rem;
 }
 
 .product-card .btn:hover {
   background-color: var(--black);
+}
+
+.product-card .fas.fa-heart,
+.product-card .fas.fa-eye {
+  background-color: var(--main-color);
+  color: var(--white);
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-card .fas.fa-heart:hover,
+.product-card .fas.fa-eye:hover {
+  background-color: var(--black);
+}
+
+.product-card .qty {
+  width: 50px;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  text-align: center;
+  border: var(--border);
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 /* Footer */
@@ -274,43 +307,74 @@ body {
   text-align: center;
 }
 
-.about h3 {
+.about .heading {
   font-size: 2.5rem;
   color: var(--black);
-  margin-bottom: 1rem;
-}
-
-.about .image {
   margin-bottom: 2rem;
 }
 
-.about .image img {
-  width: 200px; /* Fixed width */
-  height: 200px; /* Fixed height */
-  object-fit: cover; /* Maintain aspect ratio, cover the given dimension */
+.about .about-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem; /* Added padding to the sides */
 }
 
-.about .content {
-  margin-top: 1.5rem;
+.about .about-content .image {
+  margin-bottom: 2rem;
 }
 
-.about .content p {
+.about .about-content .image img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.about .about-content .content {
+  max-width: 1500px; 
+  text-align: justify;
+  padding: 0 2rem; 
+}
+
+.about .about-content .content p {
   font-size: 1.6rem;
   color: var(--black);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem; 
+  text-align: justify; 
+  text-align-last: center; 
 }
 
-.about .content .btn {
+.about .about-content .content .btn {
+  display: inline-block;
   background-color: var(--main-color);
   color: var(--white);
   padding: 1rem 2rem;
   border-radius: 0.5rem;
   text-decoration: none;
   font-size: 1.6rem;
+  margin-top: 1.5rem;
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
-.about .content .btn:hover {
+.about .about-content .content .btn:hover {
   background-color: var(--black);
+}
+
+/* Responsive Styles for About Section */
+@media (max-width: 768px) {
+  .about .about-content {
+     flex-direction: column;
+     text-align: center;
+  }
+
+  .about .about-content .image,
+  .about .about-content .content {
+     flex: 1 1 100%;
+  }
 }
 
 /* Reviews Section */
@@ -332,7 +396,7 @@ body {
   background-color: var(--white);
   padding: 1.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
 }
 
 .reviews .swiper-slide img {
@@ -428,7 +492,7 @@ body {
 
 .products.shopping-cart .box .fa-edit:hover,
 .products.shopping-cart .box .delete-btn:hover {
-  background-color: var(--black);
+  background-color: var (--black);
 }
 
 .products.shopping-cart .sub-total {
@@ -444,15 +508,15 @@ body {
 
 .cart-total p {
   font-size: 1.8rem;
-  color: var(--black);
+  color: var (--black);
   margin-bottom: 1rem;
 }
 
 .cart-total .option-btn,
 .cart-total .delete-btn,
 .cart-total .btn {
-  background-color: var(--main-color);
-  color: var(--white);
+  background-color: var (--main-color);
+  color: var (--white);
   padding: 0.8rem 1.5rem;
   border-radius: 0.5rem;
   text-decoration: none;
@@ -464,7 +528,7 @@ body {
 .cart-total .option-btn:hover,
 .cart-total .delete-btn:hover,
 .cart-total .btn:hover {
-  background-color: var(--black);
+  background-color: var (--black);
 }
 
 /* Orders Section */
@@ -479,9 +543,9 @@ body {
 }
 
 .orders .box {
-  background-color: var(--white);
-  border: var(--border);
-  box-shadow: var(--box-shadow);
+  background-color: var (--white);
+  border: var (--border);
+  box-shadow: var (--box-shadow);
   border-radius: 0.5rem;
   padding: 1.5rem;
   text-align: left;
@@ -489,12 +553,12 @@ body {
 
 .orders .box p {
   font-size: 1.6rem;
-  color: var(--black);
+  color: var (--black);
   margin: 0.5rem 0;
 }
 
 .orders .box span {
-  color: var(--main-color);
+  color: var (--main-color);
 }
 
 /* Products Section */
@@ -509,9 +573,9 @@ body {
 }
 
 .products .box {
-  background-color: var(--white);
-  border: var(--border);
-  box-shadow: var(--box-shadow);
+  background-color: var (--white);
+  border: var (--border);
+  box-shadow: var (--box-shadow);
   border-radius: 0.5rem;
   padding: 1.5rem;
   text-align: center;
@@ -526,7 +590,7 @@ body {
 
 .products .box .name {
   font-size: 1.8rem;
-  color: var(--black);
+  color: var (--black);
   margin-bottom: 0.5rem;
 }
 
@@ -539,7 +603,7 @@ body {
 
 .products .box .price {
   font-size: 1.6rem;
-  color: var(--main-color);
+  color: var (--main-color);
 }
 
 .products .box .qty {
@@ -548,12 +612,12 @@ body {
   text-align: center;
   font-size: 1.6rem;
   border-radius: 0.5rem;
-  border: var(--border);
+  border: var (--border);
 }
 
 .products .box .btn {
-  background-color: var(--main-color);
-  color: var(--white);
+  background-color: var (--main-color);
+  color: var (--white);
   padding: 0.8rem 1.5rem;
   border-radius: 0.5rem;
   text-decoration: none;
@@ -563,7 +627,7 @@ body {
 }
 
 .products .box .btn:hover {
-  background-color: var(--black);
+  background-color: var (--black);
 }
 
 /* Contact Section */
@@ -573,9 +637,9 @@ body {
 }
 
 .contact form {
-  background-color: var(--white);
+  background-color: var (--white);
   padding: 2rem;
-  box-shadow: var(--box-shadow);
+  box-shadow: var (--box-shadow);
   border-radius: 0.5rem;
   max-width: 500px;
   margin: 0 auto;
@@ -583,7 +647,7 @@ body {
 
 .contact form h3 {
   font-size: 2rem;
-  color: var(--black);
+  color: var (--black);
   margin-bottom: 1rem;
 }
 
@@ -592,15 +656,15 @@ body {
   padding: 1rem;
   margin: 1rem 0;
   font-size: 1.6rem;
-  color: var(--black);
-  background-color: var(--light-bg);
-  border: var(--border);
+  color: var (--black);
+  background-color: var (--light-bg);
+  border: var (--border);
   border-radius: 0.5rem;
 }
 
 .contact form .btn {
-  background-color: var(--main-color);
-  color: var(--white);
+  background-color: var (--main-color);
+  color: var (--white);
   padding: 0.8rem 1.5rem;
   border-radius: 0.5rem;
   text-decoration: none;
@@ -608,7 +672,7 @@ body {
 }
 
 .contact form .btn:hover {
-  background-color: var(--black);
+  background-color: var (--black);
 }
 
 /* Checkout Section */
@@ -618,9 +682,9 @@ body {
 }
 
 .checkout-orders form {
-  background-color: var(--white);
+  background-color: var (--white);
   padding: 2rem;
-  box-shadow: var(--box-shadow);
+  box-shadow: var (--box-shadow);
   border-radius: 0.5rem;
   max-width: 800px;
   margin: 0 auto;
@@ -628,19 +692,19 @@ body {
 
 .checkout-orders form h3 {
   font-size: 2rem;
-  color: var(--black);
+  color: var (--black);
   margin-bottom: 1rem;
 }
 
 .checkout-orders .display-orders p {
   font-size: 1.6rem;
-  color: var(--black);
+  color: var (--black);
   margin: 0.5rem 0;
 }
 
 .checkout-orders .display-orders .grand-total {
   font-size: 1.8rem;
-  color: var(--main-color);
+  color: var (--main-color);
   margin-top: 1rem;
 }
 
@@ -666,7 +730,7 @@ body {
 }
 
 .checkout-orders .btn {
-  background-color: var(--main-color);
+  background-color: var (--main-color);
   color: var (--white);
   padding: 0.8rem 1.5rem;
   border-radius: 0.5rem;
@@ -687,6 +751,7 @@ body {
   min-height: 100vh;
   padding: 2rem;
 }
+
 .form-container form {
   background-color: var (--white);
   padding: 2rem;
@@ -859,3 +924,124 @@ body {
 .option-btn:hover {
   text-decoration: underline;
 }
+
+/* Styles for Product Card Buttons */
+.product-card .fas.fa-heart,
+.product-card .fas.fa-eye,
+.shop-product .fas.fa-heart,
+.shop-product .fas.fa-eye {
+  background-color: var(--main-color);
+  color: var(--white);
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-card .fas.fa-heart:hover,
+.product-card .fas.fa-eye:hover,
+.shop-product .fas.fa-heart:hover,
+.shop-product .fas.fa-eye:hover {
+  background-color: var(--black);
+}
+
+/* Style for Quantity Input */
+.product-card .qty,
+.shop-product .qty {
+  width: 50px;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  text-align: center;
+  border: var(--border);
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* General Button Styles in Product Card */
+.product-card .btn,
+.shop-product .btn {
+  background-color: var(--main-color);
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.product-card .btn:hover,
+.shop-product .btn:hover {
+  background-color: var(--black);
+}
+
+/* Product View Styles */
+.product-view {
+  padding: 20px;
+  text-align: center;
+}
+
+.product-view .product-details {
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.product-view .product-details .product-images {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.product-view .product-details .product-images img {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.product-view .product-details h1 {
+  font-size: 2.5rem;
+  color: var(--black);
+  margin-bottom: 10px;
+}
+
+.product-view .product-details p {
+  font-size: 1.6rem;
+  color: var(--black);
+  margin-bottom: 20px;
+}
+
+.product-view .product-details .price {
+  font-size: 2rem;
+  color: var(--main-color);
+  margin-bottom: 20px;
+}
+
+.product-view .product-details .btn {
+  background-color: var(--main-color);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  display: inline-block;
+  margin: 10px;
+}
+
+.product-view .product-details .btn:hover {
+  background-color: var(--black);
+}
+
