@@ -1,25 +1,13 @@
 <?php
-// Initialize the $message variable as an array if it is not already set
-if (!isset($message)) {
-    $message = [];
-}
-
-// Display messages
-if (!empty($message)) {
-    foreach ($message as $msg) {
-        echo '
-        <div class="message">
-            <span>' . htmlspecialchars($msg) . '</span>
-            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-        </div>
-        ';
-    }
-}
+// Fetch store logo from the database
+$store_logo_query = $conn->prepare("SELECT logo FROM store_settings WHERE id = 1");
+$store_logo_query->execute();
+$store_logo = $store_logo_query->fetch(PDO::FETCH_ASSOC)['logo'];
 ?>
 
 <header class="header">
     <section class="flex">
-        <a href="index.php" class="logo">SimplicityTech <span></span></a>
+        <a href="index.php" class="logo"><img src="assets/store_logo/<?= htmlspecialchars($store_logo); ?>" alt="SimplicityTech"></a>
 
         <nav class="navbar">
             <a href="index.php">Home</a>
@@ -32,13 +20,12 @@ if (!empty($message)) {
         <div class="icons">
             <?php
             try {
-                // Fetch wishlist count
+                // Fetch wishlist and cart counts
                 if (isset($user_id)) {
                     $count_wishlist_items = $conn->prepare("SELECT * FROM `wishlist` WHERE user_id = ?");
                     $count_wishlist_items->execute([$user_id]);
                     $total_wishlist_counts = $count_wishlist_items->rowCount();
 
-                    // Fetch cart count
                     $count_cart_items = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
                     $count_cart_items->execute([$user_id]);
                     $total_cart_counts = $count_cart_items->rowCount();
@@ -47,7 +34,6 @@ if (!empty($message)) {
                     $total_cart_counts = 0;
                 }
             } catch (PDOException $e) {
-                // Handle database error
                 echo '<div class="message"><span>Database error: ' . htmlspecialchars($e->getMessage()) . '</span></div>';
                 $total_wishlist_counts = 0;
                 $total_cart_counts = 0;
@@ -60,43 +46,31 @@ if (!empty($message)) {
 
         <div class="profile">
             <?php
-            try {
-                // Fetch user profile
-                if (isset($user_id)) {
-                    $select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
-                    $select_profile->execute([$user_id]);
-                    if ($select_profile->rowCount() > 0) {
-                        $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
-            ?>
-            <p><?= htmlspecialchars($fetch_profile["name"]); ?></p>
-            <a href="update_user.php" class="btn">Update Profile</a>
-            <div class="flex-btn">
-                <a href="user_register.php" class="option-btn">Register</a>
-                <a href="user_login.php" class="option-btn">Login</a>
-            </div>
-            <a href="components/user_logout.php" class="delete-btn" onclick="return confirm('Logout from the website?');">Logout</a>
-            <?php
-                    } else {
-            ?>
-            <p>Please login or register first!</p>
-            <div class="flex-btn">
-                <a href="user_register.php" class="option-btn">Register</a>
-                <a href="user_login.php" class="option-btn">Login</a>
-            </div>
-            <?php
-                    }
+            if (isset($user_id)) {
+                $select_profile = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+                $select_profile->execute([$user_id]);
+                if ($select_profile->rowCount() > 0) {
+                    $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
+                    echo '<p>' . htmlspecialchars($fetch_profile["name"]) . '</p>';
+                    echo '<a href="update_user.php" class="btn">Update Profile</a>';
+                    echo '<div class="flex-btn">
+                          <a href="user_register.php" class="option-btn">Register</a>
+                          <a href="user_login.php" class="option-btn">Login</a>
+                          </div>';
+                    echo '<a href="components/user_logout.php" class="delete-btn" onclick="return confirm(\'Logout from the website?\');">Logout</a>';
                 } else {
-            ?>
-            <p>Please login or register first!</p>
-            <div class="flex-btn">
-                <a href="user_register.php" class="option-btn">Register</a>
-                <a href="user_login.php" class="option-btn">Login</a>
-            </div>
-            <?php
+                    echo '<p>Please login or register first!</p>';
+                    echo '<div class="flex-btn">
+                          <a href="user_register.php" class="option-btn">Register</a>
+                          <a href="user_login.php" class="option-btn">Login</a>
+                          </div>';
                 }
-            } catch (PDOException $e) {
-                // Handle database error
-                echo '<div class="message"><span>Database error: ' . htmlspecialchars($e->getMessage()) . '</span></div>';
+            } else {
+                echo '<p>Please login or register first!</p>';
+                echo '<div class="flex-btn">
+                      <a href="user_register.php" class="option-btn">Register</a>
+                      <a href="user_login.php" class="option-btn">Login</a>
+                      </div>';
             }
             ?>
         </div>

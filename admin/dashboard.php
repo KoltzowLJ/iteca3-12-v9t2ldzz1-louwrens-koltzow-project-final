@@ -9,6 +9,19 @@ if (!isset($_SESSION['admin_id'])) {
 
 $admin_id = $_SESSION['admin_id'];
 
+// Fetch admin's name
+$admin_name = '';
+try {
+   $select_admin = $conn->prepare("SELECT name FROM admins WHERE id = ?");
+   $select_admin->execute([$admin_id]);
+   $row = $select_admin->fetch(PDO::FETCH_ASSOC);
+   if ($row) {
+      $admin_name = $row['name'];
+   }
+} catch (PDOException $e) {
+   echo "Error: " . $e->getMessage();
+}
+
 // Fetching dynamic data
 $total_pendings = 0;
 $total_completed = 0;
@@ -17,6 +30,8 @@ $total_products = 0;
 $total_users = 0;
 $total_admins = 0;
 $total_messages = 0;
+$total_categories = 0;
+$store_logo = '';
 
 try {
    // Fetch total pendings
@@ -74,6 +89,22 @@ try {
    if ($row) {
       $total_messages = $row['total_messages'];
    }
+
+   // Fetch total categories
+   $select_categories = $conn->prepare("SELECT COUNT(*) AS total_categories FROM categories");
+   $select_categories->execute();
+   $row = $select_categories->fetch(PDO::FETCH_ASSOC);
+   if ($row) {
+      $total_categories = $row['total_categories'];
+   }
+
+   // Fetch store logo
+   $select_logo = $conn->prepare("SELECT logo FROM store_settings WHERE id = 1");
+   $select_logo->execute();
+   $row = $select_logo->fetch(PDO::FETCH_ASSOC);
+   if ($row) {
+      $store_logo = $row['logo'];
+   }
 } catch (PDOException $e) {
    echo "Error: " . $e->getMessage();
 }
@@ -117,6 +148,8 @@ try {
          <a href="admin_accounts.php">Admins</a>
          <a href="users_accounts.php">Users</a>
          <a href="messages.php">Messages</a>
+         <a href="update_category.php">Categories</a>
+         <a href="update_store_logo.php">Store Logo</a>
       </nav>
       <div class="icons">
          <div id="user-btn" class="fas fa-user"></div>
@@ -129,13 +162,14 @@ try {
    </section>
 </header>
 
+
 <section class="dashboard">
    <h1 class="heading">Dashboard</h1>
    <div class="box-container">
 
       <div class="box">
          <h3>Welcome!</h3>
-         <p>Admin 1</p>
+         <p><?= htmlspecialchars($admin_name); ?></p>
          <a href="update_profile.php" class="btn">Update Profile</a>
       </div>
 
@@ -179,6 +213,18 @@ try {
          <h3><?= $total_messages; ?></h3>
          <p>New Messages</p>
          <a href="messages.php" class="btn">See Messages</a>
+      </div>
+
+      <div class="box">
+         <h3><?= $total_categories; ?></h3>
+         <p>Categories</p>
+         <a href="update_category.php" class="btn">See Categories</a>
+      </div>
+
+      <div class="box">
+         <h3>Store Logo</h3>
+         <img src="../assets/store_logo/<?= htmlspecialchars($store_logo); ?>" alt="Store Logo" style="max-width: 100%; height: auto;">
+         <a href="update_store_logo.php" class="btn">Update Logo</a>
       </div>
 
    </div>

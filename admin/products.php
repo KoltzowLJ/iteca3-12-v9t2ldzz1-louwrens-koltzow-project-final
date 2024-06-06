@@ -14,6 +14,7 @@ if (isset($_POST['add_product'])) {
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
     $price = filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $details = filter_var($_POST['details'], FILTER_SANITIZE_STRING);
+    $category_id = filter_var($_POST['category_id'], FILTER_SANITIZE_NUMBER_INT);
 
     // Ensure unique naming for each image
     function upload_image($image_name, $image_tmp_name, $image_folder, $pid, $field_name) {
@@ -32,11 +33,11 @@ if (isset($_POST['add_product'])) {
 
     $image_folder = '../assets/uploaded_images/';
 
-    if ($name == '' || $price == '' || $details == '' || $_FILES['image_01']['name'] == '' || $_FILES['image_02']['name'] == '' || $_FILES['image_03']['name'] == '') {
+    if ($name == '' || $price == '' || $details == '' || $_FILES['image_01']['name'] == '' || $_FILES['image_02']['name'] == '' || $_FILES['image_03']['name'] == '' || $category_id == '') {
         $message[] = 'Please fill out all fields!';
     } else {
-        $insert_product = $conn->prepare("INSERT INTO `products` (name, price, details) VALUES (?, ?, ?)");
-        $insert_product->execute([$name, $price, $details]);
+        $insert_product = $conn->prepare("INSERT INTO `products` (name, price, details, category_id) VALUES (?, ?, ?, ?)");
+        $insert_product->execute([$name, $price, $details, $category_id]);
         $pid = $conn->lastInsertId();
 
         $image_01 = upload_image($_FILES['image_01']['name'], $_FILES['image_01']['tmp_name'], $image_folder, $pid, 'image_01');
@@ -78,14 +79,12 @@ if (isset($_GET['delete'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJVLZYDW1W"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-WJVLZYDW1W');
     </script>
 
@@ -128,6 +127,19 @@ if (isset($_GET['delete'])) {
             <div class="inputBox">
                 <span>Product Details (required)</span>
                 <textarea name="details" placeholder="Enter product details" class="box" required maxlength="500" cols="30" rows="10"></textarea>
+            </div>
+            <div class="inputBox">
+                <span>Select Category (required)</span>
+                <select name="category_id" required class="box">
+                    <option value="" disabled selected>Select Category</option>
+                    <?php
+                    $select_categories = $conn->prepare("SELECT * FROM `categories`");
+                    $select_categories->execute();
+                    while ($fetch_categories = $select_categories->fetch(PDO::FETCH_ASSOC)) {
+                        echo '<option value="' . $fetch_categories['id'] . '">' . $fetch_categories['name'] . '</option>';
+                    }
+                    ?>
+                </select>
             </div>
         </div>
         <input type="submit" value="Add Product" class="btn" name="add_product">
