@@ -79,7 +79,7 @@ if(isset($_POST['update_qty'])){
    ?>
    <form action="" method="post" class="box">
       <input type="hidden" name="cart_id" value="<?= htmlspecialchars($fetch_cart['id']); ?>">
-      <a href="quick_view.php?pid=<?= htmlspecialchars($fetch_cart['pid']); ?>" class="fas fa-eye"></a>
+      <a href="product_view_detail.php?pid=<?= htmlspecialchars($fetch_cart['pid']); ?>" class="fas fa-eye"></a>
       <img src="assets/uploaded_images/<?= htmlspecialchars($fetch_cart['image']); ?>" alt="<?= htmlspecialchars($fetch_cart['name']); ?>">
       <div class="name"><?= htmlspecialchars($fetch_cart['name']); ?></div>
       <div class="flex">
@@ -102,7 +102,7 @@ if(isset($_POST['update_qty'])){
    <div class="cart-total">
       <p>Grand Total: <span>R<?= htmlspecialchars($grand_total); ?></span></p>
       <a href="shop.php" class="option-btn">Continue Shopping</a>
-      <a href="cart.php?delete_all" class="delete-btn <?= ($grand_total > 1) ? '' : 'disabled'; ?>" onclick="return confirm('Delete all from cart?');">Delete All Items</a>
+      <a href="cart.php?delete_all" class="option-btn <?= ($grand_total > 1) ? '' : 'disabled'; ?>" onclick="return confirm('Delete all from cart?');">Delete All Items</a>
       <a href="checkout.php" class="btn <?= ($grand_total > 1) ? '' : 'disabled'; ?>">Proceed to Checkout</a>
    </div>
 
