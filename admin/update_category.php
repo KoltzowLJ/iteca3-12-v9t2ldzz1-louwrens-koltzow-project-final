@@ -40,6 +40,7 @@ if (isset($_POST['update_category'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJVLZYDW1W"></script>
     <script>
