@@ -20,6 +20,14 @@ if (isset($_GET['pid'])) {
     $product = null;
 }
 
+// Redirect to login if not logged in and trying to add to cart or wishlist
+if (isset($_POST['add_to_cart']) || isset($_POST['add_to_wishlist'])) {
+    if (!$user_id) {
+        header('Location: user_login.php');
+        exit;
+    }
+}
+
 // Handle Add to Cart
 if (isset($_POST['add_to_cart'])) {
     $pid = $_POST['pid'];
@@ -74,7 +82,6 @@ if (isset($_POST['add_to_wishlist'])) {
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -104,7 +111,7 @@ if (isset($_POST['add_to_wishlist'])) {
             </div>
             <h1><?= htmlspecialchars($product['name']); ?></h1>
             <p><?= htmlspecialchars($product['details']); ?></p>
-            <div class="price">R<?= number_format($product['price'], 2); ?></div>
+            <div class="price">R<?= number_format(htmlspecialchars($product['price']), 2); ?></div>
             <form action="" method="post">
                 <input type="hidden" name="pid" value="<?= htmlspecialchars($product['id']); ?>">
                 <input type="hidden" name="name" value="<?= htmlspecialchars($product['name']); ?>">

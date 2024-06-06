@@ -34,6 +34,8 @@ if(isset($_POST['submit'])){
 
    <!-- Custom CSS file link -->
    <link rel="stylesheet" href="../assets/css/admin_styles.css">
+
+
 </head>
 <body>
 
@@ -48,16 +50,16 @@ if(isset($message)){
 }
 ?>
 
-<section class="form-container">
-
+<section class="login-form">
    <form action="" method="post">
       <h3>Login Now</h3>
       <input type="text" name="name" required placeholder="Enter your username" maxlength="20" class="box">
       <input type="password" name="pass" required placeholder="Enter your password" maxlength="20" class="box">
       <input type="submit" value="Login Now" class="btn" name="submit">
    </form>
-
 </section>
+<p class="back-link"><a href="/user_login.php" class="option-btn">Go Back</a></p>
+
 
 </body>
 </html>

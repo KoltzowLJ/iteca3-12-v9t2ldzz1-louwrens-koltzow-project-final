@@ -2,71 +2,70 @@
 include '../components/connect.php';
 session_start();
 
-if(!isset($_SESSION['admin_id'])){
-   header('location:admin_login.php');
-   exit();
+if (!isset($_SESSION['admin_id'])) {
+    header('location:admin_login.php');
+    exit();
 }
 
 $admin_id = $_SESSION['admin_id'];
 
-if(isset($_GET['update'])){
-   $update_id = $_GET['update'];
-   $select_products = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
-   $select_products->execute([$update_id]);
-   if($select_products->rowCount() > 0){
-      $fetch_products = $select_products->fetch(PDO::FETCH_ASSOC);
-   }else{
-      header('location:products.php');
-   }
-}else{
-   header('location:products.php');
+if (isset($_GET['update'])) {
+    $update_id = $_GET['update'];
+    $select_products = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
+    $select_products->execute([$update_id]);
+    if ($select_products->rowCount() > 0) {
+        $fetch_products = $select_products->fetch(PDO::FETCH_ASSOC);
+    } else {
+        header('location:products.php');
+        exit();
+    }
+} else {
+    header('location:products.php');
+    exit();
 }
 
 // Handle update request
-if(isset($_POST['update'])){
-   $pid = $_POST['pid'];
-   $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
-   $price = filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_INT);
-   $details = filter_var($_POST['details'], FILTER_SANITIZE_STRING);
+if (isset($_POST['update'])) {
+    $pid = $_POST['pid'];
+    $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    $price = filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $details = filter_var($_POST['details'], FILTER_SANITIZE_STRING);
 
-   $update_product = $conn->prepare("UPDATE `products` SET name = ?, price = ?, details = ? WHERE id = ?");
-   $update_product->execute([$name, $price, $details, $pid]);
+    $update_product = $conn->prepare("UPDATE `products` SET name = ?, price = ?, details = ? WHERE id = ?");
+    $update_product->execute([$name, $price, $details, $pid]);
 
-   $old_image_01 = $_POST['old_image_01'];
-   $old_image_02 = $_POST['old_image_02'];
-   $old_image_03 = $_POST['old_image_03'];
+    $old_image_01 = $_POST['old_image_01'];
+    $old_image_02 = $_POST['old_image_02'];
+    $old_image_03 = $_POST['old_image_03'];
 
-   if(isset($_FILES['image_01']['name']) && !empty($_FILES['image_01']['name'])){
-      $image_01 = $_FILES['image_01']['name'];
-      $image_01_tmp_name = $_FILES['image_01']['tmp_name'];
-      $image_01_folder = '../assets/uploaded_images/'.$image_01;
-      move_uploaded_file($image_01_tmp_name, $image_01_folder);
-      unlink('../assets/uploaded_images/'.$old_image_01);
-      $update_image_01 = $conn->prepare("UPDATE `products` SET image_01 = ? WHERE id = ?");
-      $update_image_01->execute([$image_01, $pid]);
-   }
+    // Function to handle image upload
+    function upload_image($image_name, $image_tmp_name, $image_folder, $old_image, $pid, $conn, $field_name) {
+        if (!empty($image_name)) {
+            $unique_suffix = time() . '_' . uniqid();
+            $image = 'product_' . $pid . '_' . $field_name . '_' . $unique_suffix . '.' . pathinfo($image_name, PATHINFO_EXTENSION);
+            $image_path = $image_folder . $image;
+            if (move_uploaded_file($image_tmp_name, $image_path)) {
+                if (file_exists($image_folder . $old_image)) {
+                    unlink($image_folder . $old_image);
+                }
+                $update_image = $conn->prepare("UPDATE `products` SET $field_name = ? WHERE id = ?");
+                $update_image->execute([$image, $pid]);
+                return true;
+            } else {
+                echo "<p class='error'>Failed to upload $image_name</p>";
+                return false;
+            }
+        }
+        return false;
+    }
 
-   if(isset($_FILES['image_02']['name']) && !empty($_FILES['image_02']['name'])){
-      $image_02 = $_FILES['image_02']['name'];
-      $image_02_tmp_name = $_FILES['image_02']['tmp_name'];
-      $image_02_folder = '../assets/uploaded_images/'.$image_02;
-      move_uploaded_file($image_02_tmp_name, $image_02_folder);
-      unlink('../assets/uploaded_images/'.$old_image_02);
-      $update_image_02 = $conn->prepare("UPDATE `products` SET image_02 = ? WHERE id = ?");
-      $update_image_02->execute([$image_02, $pid]);
-   }
+    $image_folder = '../assets/uploaded_images/';
+    upload_image($_FILES['image_01']['name'], $_FILES['image_01']['tmp_name'], $image_folder, $old_image_01, $pid, $conn, 'image_01');
+    upload_image($_FILES['image_02']['name'], $_FILES['image_02']['tmp_name'], $image_folder, $old_image_02, $pid, $conn, 'image_02');
+    upload_image($_FILES['image_03']['name'], $_FILES['image_03']['tmp_name'], $image_folder, $old_image_03, $pid, $conn, 'image_03');
 
-   if(isset($_FILES['image_03']['name']) && !empty($_FILES['image_03']['name'])){
-      $image_03 = $_FILES['image_03']['name'];
-      $image_03_tmp_name = $_FILES['image_03']['tmp_name'];
-      $image_03_folder = '../assets/uploaded_images/'.$image_03;
-      move_uploaded_file($image_03_tmp_name, $image_03_folder);
-      unlink('../assets/uploaded_images/'.$old_image_03);
-      $update_image_03 = $conn->prepare("UPDATE `products` SET image_03 = ? WHERE id = ?");
-      $update_image_03->execute([$image_03, $pid]);
-   }
-
-   $message[] = 'Product updated successfully!';
+    $message[] = 'Product updated successfully!';
+    header("Refresh:0"); // Reload the page to reflect changes
 }
 ?>
 
@@ -89,38 +88,38 @@ if(isset($_POST['update'])){
    <h1 class="heading">Update Product</h1>
 
    <?php
-   if(isset($message)){
-      foreach($message as $msg){
-         echo '<p class="message">'.$msg.'</p>';
-      }
+   if (isset($message)) {
+       foreach ($message as $msg) {
+           echo '<p class="message">' . htmlspecialchars($msg) . '</p>';
+       }
    }
    ?>
 
    <form action="" method="post" enctype="multipart/form-data">
-      <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-      <input type="hidden" name="old_image_01" value="<?= $fetch_products['image_01']; ?>">
-      <input type="hidden" name="old_image_02" value="<?= $fetch_products['image_02']; ?>">
-      <input type="hidden" name="old_image_03" value="<?= $fetch_products['image_03']; ?>">
+      <input type="hidden" name="pid" value="<?= htmlspecialchars($fetch_products['id']); ?>">
+      <input type="hidden" name="old_image_01" value="<?= htmlspecialchars($fetch_products['image_01']); ?>">
+      <input type="hidden" name="old_image_02" value="<?= htmlspecialchars($fetch_products['image_02']); ?>">
+      <input type="hidden" name="old_image_03" value="<?= htmlspecialchars($fetch_products['image_03']); ?>">
       
       <div class="image-container">
          <div class="main-image">
-            <img src="../assets/uploaded_images/<?= $fetch_products['image_01']; ?>" alt="Main Image">
+            <img src="../assets/uploaded_images/<?= htmlspecialchars($fetch_products['image_01']); ?>" alt="Main Image">
          </div>
          <div class="sub-image">
-            <img src="../assets/uploaded_images/<?= $fetch_products['image_01']; ?>" alt="Image 1">
-            <img src="../assets/uploaded_images/<?= $fetch_products['image_02']; ?>" alt="Image 2">
-            <img src="../assets/uploaded_images/<?= $fetch_products['image_03']; ?>" alt="Image 3">
+            <img src="../assets/uploaded_images/<?= htmlspecialchars($fetch_products['image_01']); ?>" alt="Image 1">
+            <img src="../assets/uploaded_images/<?= htmlspecialchars($fetch_products['image_02']); ?>" alt="Image 2">
+            <img src="../assets/uploaded_images/<?= htmlspecialchars($fetch_products['image_03']); ?>" alt="Image 3">
          </div>
       </div>
       
       <span>Update Name</span>
-      <input type="text" name="name" required class="box" maxlength="100" placeholder="Enter product name" value="<?= $fetch_products['name']; ?>">
+      <input type="text" name="name" required class="box" maxlength="100" placeholder="Enter product name" value="<?= htmlspecialchars($fetch_products['name']); ?>">
       
       <span>Update Price</span>
-      <input type="number" name="price" required class="box" min="0" max="9999999999" placeholder="Enter product price" value="<?= $fetch_products['price']; ?>">
+      <input type="number" name="price" step="0.01" required class="box" min="0" max="9999999999" placeholder="Enter product price" value="<?= htmlspecialchars($fetch_products['price']); ?>">
       
       <span>Update Details</span>
-      <textarea name="details" class="box" required cols="30" rows="10"><?= $fetch_products['details']; ?></textarea>
+      <textarea name="details" class="box" required cols="30" rows="10"><?= htmlspecialchars($fetch_products['details']); ?></textarea>
       
       <span>Update Image 01</span>
       <input type="file" name="image_01" accept="image/jpg, image/jpeg, image/png, image/webp" class="box">
