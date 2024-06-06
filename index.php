@@ -13,7 +13,7 @@ if(isset($_SESSION['user_id'])){
 include 'components/wishlist_cart.php';
 
 // Fetch unique products from the database
-$get_unique_products = $conn->prepare("SELECT * FROM products LIMIT 6");
+$get_unique_products = $conn->prepare("SELECT * FROM products ORDER BY id DESC LIMIT 6");
 $get_unique_products->execute();
 
 ?>
@@ -21,6 +21,17 @@ $get_unique_products->execute();
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJVLZYDW1W"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-WJVLZYDW1W');
+    </script>
+
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
