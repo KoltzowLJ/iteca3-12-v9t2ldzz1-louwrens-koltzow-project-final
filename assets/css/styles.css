@@ -40,8 +40,9 @@ body {
   color: var(--black);
 }
 
-.header .logo span {
-  color: var(--main-color);
+.header .logo img {
+  width: auto;
+  height: 100px; /* Adjust the height to your preference */
 }
 
 .header .navbar a {
