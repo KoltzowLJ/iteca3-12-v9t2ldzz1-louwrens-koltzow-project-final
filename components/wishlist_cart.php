@@ -12,7 +12,7 @@ if (isset($_POST['add_to_wishlist'])) {
         $name = filter_var($name, FILTER_SANITIZE_STRING);
         $price = $_POST['price'];
         $price = filter_var($price, FILTER_SANITIZE_STRING);
-        $image = isset($_POST['image']) ? $_POST['image'] : '';
+        $image = $_POST['image'];
         $image = filter_var($image, FILTER_SANITIZE_STRING);
 
         $check_wishlist_numbers = $conn->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");
@@ -45,7 +45,7 @@ if (isset($_POST['add_to_cart'])) {
         $name = filter_var($name, FILTER_SANITIZE_STRING);
         $price = $_POST['price'];
         $price = filter_var($price, FILTER_SANITIZE_STRING);
-        $image = isset($_POST['image']) ? $_POST['image'] : '';
+        $image = $_POST['image'];
         $image = filter_var($image, FILTER_SANITIZE_STRING);
         $qty = $_POST['qty'];
         $qty = filter_var($qty, FILTER_SANITIZE_NUMBER_INT);

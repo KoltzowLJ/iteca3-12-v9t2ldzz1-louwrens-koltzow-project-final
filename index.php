@@ -4,11 +4,11 @@ include 'components/connect.php';
 
 session_start();
 
-if(isset($_SESSION['user_id'])){
+if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
- } else {
+} else {
     $user_id = '';
- }
+}
 
 include 'components/wishlist_cart.php';
 
@@ -21,27 +21,23 @@ $get_unique_products->execute();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJVLZYDW1W"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
-    gtag('config', 'G-WJVLZYDW1W');
     </script>
 
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Home</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
 
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-   <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-   
 <?php include 'components/user_header.php'; ?>
 
 <section class="home-products">
@@ -61,13 +57,7 @@ $get_unique_products->execute();
                     <input type="hidden" name="pid" value="<?= htmlspecialchars($unique_product['id']); ?>">
                     <input type="hidden" name="name" value="<?= htmlspecialchars($unique_product['name']); ?>">
                     <input type="hidden" name="price" value="<?= htmlspecialchars($unique_product['price']); ?>">
-                    <input type="hidden" name="image_01" value="<?= htmlspecialchars($unique_product['image_01']); ?>">
-                    <?php if (!empty($unique_product['image_02'])): ?>
-                        <input type="hidden" name="image_02" value="<?= htmlspecialchars($unique_product['image_02']); ?>">
-                    <?php endif; ?>
-                    <?php if (!empty($unique_product['image_03'])): ?>
-                        <input type="hidden" name="image_03" value="<?= htmlspecialchars($unique_product['image_03']); ?>">
-                    <?php endif; ?>
+                    <input type="hidden" name="image" value="<?= htmlspecialchars($unique_product['image_01']); ?>">
                     <button class="fas fa-heart" type="submit" name="add_to_wishlist"></button>
                     <a href="product_view_detail.php?pid=<?= htmlspecialchars($unique_product['id']); ?>" class="fas fa-eye"></a>
                     <input type="number" name="qty" class="qty" min="1" max="99" onkeypress="if(this.value.length == 2) return false;" value="1">
