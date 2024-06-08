@@ -1,3 +1,11 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+ <!-- Database Connection -->
 <?php
 
 $db_name = 'mysql:host=localhost;dbname=simplicitytech_db';

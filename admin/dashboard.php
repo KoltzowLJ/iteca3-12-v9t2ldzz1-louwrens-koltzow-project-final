@@ -1,15 +1,28 @@
+<!--
+    Name:               Louwrens Költzow
+    Student Number:     V9T2LDZZ1
+    Campus:             Pretoria
+    Module:             ITECA3-B12: Project Final
+ -->
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
+// Check Admin Authenticaiton
 if (!isset($_SESSION['admin_id'])) {
-   header('location:admin_login.php');
-   exit();
+    header('location:admin_login.php');
+    exit();
 }
 
+// Retrieves Admin ID
 $admin_id = $_SESSION['admin_id'];
 
-// Fetch admin's name
+// Fetch Admin Name
 $admin_name = '';
 try {
    $select_admin = $conn->prepare("SELECT name FROM admins WHERE id = ?");
@@ -22,7 +35,7 @@ try {
    echo "Error: " . $e->getMessage();
 }
 
-// Fetching dynamic data
+// Fetching Dynamic Data
 $total_pendings = 0;
 $total_completed = 0;
 $total_orders = 0;
@@ -129,40 +142,16 @@ try {
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Dashboard</title>
 
-   <!-- Font Awesome CDN link -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
    <!-- Custom CSS file link -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
 
-<!-- Admin Header -->
-<header class="header">
-   <section class="flex">
-      <a href="dashboard.php" class="logo">Admin<span>Panel</span></a>
-      <nav class="navbar">
-         <a href="dashboard.php">Home</a>
-         <a href="products.php">Products</a>
-         <a href="placed_orders.php">Orders</a>
-         <a href="admin_accounts.php">Admins</a>
-         <a href="users_accounts.php">Users</a>
-         <a href="messages.php">Messages</a>
-         <a href="update_category.php">Categories</a>
-         <a href="update_store_logo.php">Store Logo</a>
-      </nav>
-      <div class="icons">
-         <div id="user-btn" class="fas fa-user"></div>
-      </div>
-      <div class="profile">
-         <p>Admin 1</p>
-         <a href="update_profile.php" class="btn">Update Profile</a>
-         <a href="../components/admin_logout.php" class="delete-btn">Logout</a>
-      </div>
-   </section>
-</header>
+<!-- Include headers on page -->
+<?php include '../components/admin_header.php'; ?>
 
-
+<!-- Admin Dashboard Containg All Components -->
 <section class="dashboard">
    <h1 class="heading">Dashboard</h1>
    <div class="box-container">
@@ -230,8 +219,10 @@ try {
    </div>
 </section>
 
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
    document.querySelector('.profile').classList.toggle('active');

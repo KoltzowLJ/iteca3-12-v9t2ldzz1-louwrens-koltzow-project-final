@@ -1,15 +1,27 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include 'components/connect.php';
 
+// Start Session
 session_start();
 
+// Check User Authenticaiton
 if (isset($_SESSION['user_id'])) {
    $user_id = $_SESSION['user_id'];
 } else {
    $user_id = '';
 }
 
-// Redirect to login if not logged in and trying to add to cart or wishlist
+// Redirect to Login
 if (isset($_POST['add_to_cart']) || isset($_POST['add_to_wishlist'])) {
     if (!$user_id) {
         header('Location: user_login.php');
@@ -17,7 +29,7 @@ if (isset($_POST['add_to_cart']) || isset($_POST['add_to_wishlist'])) {
     }
 }
 
-// Handle adding to cart
+// Handles Add Requests
 if (isset($_POST['add_to_cart'])) {
     $pid = $_POST['pid'];
     $pid = filter_var($pid, FILTER_SANITIZE_STRING);
@@ -42,7 +54,7 @@ if (isset($_POST['add_to_cart'])) {
     }
 }
 
-// Handle adding to wishlist
+// Handles Add Requests
 if (isset($_POST['add_to_wishlist'])) {
     $pid = $_POST['pid'];
     $pid = filter_var($pid, FILTER_SANITIZE_STRING);
@@ -65,12 +77,12 @@ if (isset($_POST['add_to_wishlist'])) {
     }
 }
 
-// Fetch categories for the filter
+// Fetch Categories
 $select_categories = $conn->prepare("SELECT * FROM `categories`");
 $select_categories->execute();
 $categories = $select_categories->fetchAll(PDO::FETCH_ASSOC);
 
-// Fetch products based on selected category
+// Fetched Linked Products
 $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : '';
 if ($category_id) {
     $select_products = $conn->prepare("SELECT * FROM `products` WHERE category_id = ?");
@@ -100,16 +112,16 @@ if ($category_id) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop</title>
     
-    <!-- Font Awesome CDN link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
     <!-- Custom CSS file link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
     
+<!-- Include headers on page -->
 <?php include 'components/user_header.php'; ?>
 
+<!-- Display Products -->
 <section class="home-products">
     <h1 class="heading">Shop</h1>
 
@@ -157,9 +169,12 @@ if ($category_id) {
     </div>
 </section>
 
+<!-- Include Footer -->
 <?php include 'components/footer.php'; ?>
 
+<!-- Include JavaScript -->
 <script src="assets/js/script.js"></script>
+
 
 </body>
 </html>

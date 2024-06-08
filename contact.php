@@ -1,36 +1,49 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+// Include Database Connection
 include 'components/connect.php';
 
+// Start Session
 session_start();
 
-if(isset($_SESSION['user_id'])){
-   $user_id = $_SESSION['user_id'];
+// Check User Authenticaiton
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 } else {
-   $user_id = '';
-   header('location:user_login.php');
-   exit();
+    $user_id = '';
+    header('location:user_login.php');
+    exit();
 }
 
-$message = []; // Initialize the $message variable as an array
+// Test
+$message = []; 
 
+// On Submit Action
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'], $_POST['email'], $_POST['number'], $_POST['msg'])){
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $number = filter_var($_POST['number'], FILTER_SANITIZE_NUMBER_INT);
     $message_text = filter_var($_POST['msg'], FILTER_SANITIZE_STRING);
 
-    // Insert message into database
+    // Insert Message Into Database
     try {
         $insert_message = $conn->prepare("INSERT INTO `messages` (user_id, name, email, number, message) VALUES (?, ?, ?, ?, ?)");
         $insert_message->execute([$user_id, $name, $email, $number, $message_text]);
         
-        // Email to be sent to the user
+        // Email Sent To User 
         $to = $email;
         $subject = "Contact Form Submission - SimplicityTech";
         $body = "Hello $name,\n\nThank you for contacting us. We have received your message and will get back to you soon.\n\nYour Message:\n$message_text\n\nBest Regards,\nSimplicityTech Team";
         $headers = "From: no-reply@simplicitytech.co.za";
 
-        // Email to be sent to SimplicityTech
+        // Email Sent To Company
         $admin_email = "no-reply@simplicitytech.co.za";
         $admin_subject = "New Contact Form Submission";
         $admin_body = "Name: $name\nEmail: $email\nNumber: $number\nMessage: $message_text";
@@ -66,24 +79,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'], $_POST['email'
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Contact</title>
    
-   <!-- Font Awesome CDN link -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
    <!-- Custom CSS file link -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
    
+<!-- Include headers on page -->
 <?php include 'components/user_header.php'; ?>
 
-<?php
-if (!empty($message)) {
-    foreach ($message as $msg) {
-        echo '<div class="message"><span>' . htmlspecialchars($msg) . '</span><i class="fas fa-times" onclick="this.parentElement.remove();"></i></div>';
-    }
-}
-?>
-
+<!-- Display Fields to Send Message -->
 <section class="contact">
    <form action="" method="post">
       <h3>Contact Us</h3>
@@ -95,9 +100,12 @@ if (!empty($message)) {
    </form>
 </section>
 
+<!-- Include Footer -->
 <?php include 'components/footer.php'; ?>
 
+<!-- Include JavaScript -->
 <script src="assets/js/script.js"></script>
+
 
 </body>
 </html>

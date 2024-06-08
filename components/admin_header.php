@@ -1,10 +1,19 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
-// Initialize the $message variable as an array if it is not already set
+
+// Initialize variable as an array
 if (!isset($message)) {
     $message = [];
 }
 
-// Display messages
+// Display Messages
 if (!empty($message)) {
     foreach ($message as $msg) {
         echo '
@@ -17,6 +26,7 @@ if (!empty($message)) {
 }
 ?>
 
+<!-- Header Section -->
 <header class="header">
    <section class="flex">
 
@@ -29,6 +39,8 @@ if (!empty($message)) {
          <a href="../admin/admin_accounts.php">Admins</a>
          <a href="../admin/users_accounts.php">Users</a>
          <a href="../admin/messages.php">Messages</a>
+         <a href="../admin/update_category.php">Categories</a>
+         <a href="../admin/update_store_logo.php">Store Logo</a>
       </nav>
 
       <div class="icons">

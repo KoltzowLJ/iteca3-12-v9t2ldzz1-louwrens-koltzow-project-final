@@ -1,10 +1,23 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
 
+// Include Database Connection
 include 'components/connect.php';
+
+// Include Detailed Product View
 include 'components/product_view.php';
 
+// Start Session
 session_start();
 
+// Check User Authenticaiton
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
 } else {
@@ -20,7 +33,7 @@ if (isset($_GET['pid'])) {
     $product = null;
 }
 
-// Redirect to login if not logged in and trying to add to cart or wishlist
+// Redirect to Login
 if (isset($_POST['add_to_cart']) || isset($_POST['add_to_wishlist'])) {
     if (!$user_id) {
         header('Location: user_login.php');
@@ -28,7 +41,7 @@ if (isset($_POST['add_to_cart']) || isset($_POST['add_to_wishlist'])) {
     }
 }
 
-// Handle Add to Cart
+// Handle Add Requests
 if (isset($_POST['add_to_cart'])) {
     $pid = $_POST['pid'];
     $name = $_POST['name'];
@@ -36,7 +49,7 @@ if (isset($_POST['add_to_cart'])) {
     $quantity = $_POST['quantity'];
     $image_01 = $_POST['image_01'];
 
-    // Sanitize input
+
     $pid = filter_var($pid, FILTER_SANITIZE_STRING);
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $price = filter_var($price, FILTER_SANITIZE_STRING);
@@ -55,7 +68,7 @@ if (isset($_POST['add_to_cart'])) {
     }
 }
 
-// Handle Add to Wishlist
+// Handle Add Requests
 if (isset($_POST['add_to_wishlist'])) {
     $pid = $_POST['pid'];
     $name = $_POST['name'];
@@ -101,13 +114,16 @@ if (isset($_POST['add_to_wishlist'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product View</title>
 
+    <!-- Custom CSS file link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
    
+<!-- Include headers on page -->
 <?php include 'components/user_header.php'; ?>
 
+<!-- View Selected Product -->
 <section class="product-view">
     <?php if ($product): ?>
         <div class="product-details">
@@ -138,9 +154,12 @@ if (isset($_POST['add_to_wishlist'])) {
     <?php endif; ?>
 </section>
 
+<!-- Include Footer -->
 <?php include 'components/footer.php'; ?>
 
+<!-- Include JavaScript -->
 <script src="assets/js/script.js"></script>
+
 
 </body>
 </html>

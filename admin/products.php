@@ -1,22 +1,36 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
+// Check Admin Authenticaiton
 if (!isset($_SESSION['admin_id'])) {
     header('location:admin_login.php');
     exit();
 }
 
+// Retrieves Admin ID
 $admin_id = $_SESSION['admin_id'];
 
-// Handle add product request
+// Handle Add Requests
 if (isset($_POST['add_product'])) {
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
     $price = filter_var($_POST['price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
     $details = filter_var($_POST['details'], FILTER_SANITIZE_STRING);
     $category_id = filter_var($_POST['category_id'], FILTER_SANITIZE_NUMBER_INT);
 
-    // Ensure unique naming for each image
+    // Unique Naming Convention for Images Added and Stored
     function upload_image($image_name, $image_tmp_name, $image_folder, $pid, $field_name) {
         if (!empty($image_name)) {
             $unique_suffix = time() . '_' . uniqid();
@@ -54,7 +68,7 @@ if (isset($_POST['add_product'])) {
     }
 }
 
-// Handle delete request
+// Handles Delete requests
 if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
     $delete_product_image = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
@@ -94,13 +108,17 @@ if (isset($_GET['delete'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
 
+    <!-- Custom CSS file link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
 
+<!-- Include headers on page -->
 <?php include '../components/admin_header.php'; ?>
 
+
+<!-- Section to Add New Products -->
 <section class="add-products">
     <h1 class="heading">Add Product</h1>
     <form action="" method="post" enctype="multipart/form-data">
@@ -147,6 +165,7 @@ if (isset($_GET['delete'])) {
     </form>
 </section>
 
+<!-- Section to Display All Products -->
 <section class="show-products">
     <h1 class="heading">Products Added</h1>
     <div class="box-container">
@@ -175,11 +194,13 @@ if (isset($_GET['delete'])) {
     </div>
 </section>
 
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
-    document.querySelector('.profile').classList.toggle('active');
+   document.querySelector('.profile').classList.toggle('active');
 });
 </script>
 

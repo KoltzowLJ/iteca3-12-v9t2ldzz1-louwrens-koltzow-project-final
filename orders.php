@@ -1,14 +1,26 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include 'components/connect.php';
 
+// Start Session
 session_start();
 
-if(isset($_SESSION['user_id'])){
-   $user_id = $_SESSION['user_id'];
+// Check User Authenticaiton
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 } else {
-   $user_id = '';
-   header('location:user_login.php');
-   exit();
+    $user_id = '';
+    header('location:user_login.php');
+    exit();
 }
 
 ?>
@@ -32,16 +44,16 @@ if(isset($_SESSION['user_id'])){
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Orders</title>
    
-   <!-- Font Awesome CDN link -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
    <!-- Custom CSS file link -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
    
+<!-- Include headers on page -->
 <?php include 'components/user_header.php'; ?>
 
+<!-- Display Detailed Orders -->
 <section class="orders">
 
    <h1 class="heading">Placed Orders</h1>
@@ -75,9 +87,12 @@ if(isset($_SESSION['user_id'])){
 
 </section>
 
+<!-- Include Footer -->
 <?php include 'components/footer.php'; ?>
 
+<!-- Include JavaScript -->
 <script src="assets/js/script.js"></script>
+
 
 </body>
 </html>

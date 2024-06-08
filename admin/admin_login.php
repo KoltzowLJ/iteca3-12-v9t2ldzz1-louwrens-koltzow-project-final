@@ -1,7 +1,20 @@
+<!--
+    Name:               Louwrens Költzow
+    Student Number:     V9T2LDZZ1
+    Campus:             Pretoria
+    Module:             ITECA3-B12: Project Final
+ -->
+
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
+// Check if the form is submitted
 if(isset($_POST['submit'])){
    $name = $_POST['name'];
    $name = filter_var($name, FILTER_SANITIZE_STRING);
@@ -12,6 +25,7 @@ if(isset($_POST['submit'])){
    $select_admin->execute([$name]);
    $row = $select_admin->fetch(PDO::FETCH_ASSOC);
 
+   // Verify Credentials
    if($row && password_verify($pass, $row['password'])){
       $_SESSION['admin_id'] = $row['id'];
       header('location:dashboard.php');
@@ -40,17 +54,18 @@ if(isset($_POST['submit'])){
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Admin Login</title>
 
-   <!-- Font Awesome CDN link -->
+   <!-- Custom CSS file links -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-   <!-- Custom CSS file link -->
    <link rel="stylesheet" href="../assets/css/admin_styles.css">
 
 
 </head>
 <body>
 
+
 <?php
+
+// Display messages
 if(isset($message)){
    echo '
    <div class="message">
@@ -59,8 +74,10 @@ if(isset($message)){
    </div>
    ';
 }
+
 ?>
 
+<!-- Login Form -->
 <section class="login-form">
    <form action="" method="post">
       <h3>Login Now</h3>
@@ -70,7 +87,6 @@ if(isset($message)){
    </form>
 </section>
 <p class="back-link"><a href="/user_login.php" class="option-btn">Go Back</a></p>
-
 
 </body>
 </html>

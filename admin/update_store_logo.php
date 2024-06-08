@@ -1,15 +1,29 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
+// Check Admin Authenticaiton
 if (!isset($_SESSION['admin_id'])) {
     header('location:admin_login.php');
     exit();
 }
 
+// Retrieves Admin ID
 $admin_id = $_SESSION['admin_id'];
 
-// Handle update store logo request
+// Handle Update Requests
 if (isset($_POST['update_logo'])) {
     $logo = $_FILES['logo']['name'];
     $logo_tmp_name = $_FILES['logo']['tmp_name'];
@@ -25,7 +39,7 @@ if (isset($_POST['update_logo'])) {
     }
 }
 
-// Fetch current logo
+// Fetch Current Logo
 $select_logo = $conn->prepare("SELECT logo FROM store_settings WHERE id = 1");
 $select_logo->execute();
 $current_logo = $select_logo->fetch(PDO::FETCH_ASSOC)['logo'];
@@ -49,26 +63,19 @@ $current_logo = $select_logo->fetch(PDO::FETCH_ASSOC)['logo'];
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Update Store Logo</title>
 
-    <!-- Font Awesome CDN link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <!-- Custom CSS file link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
 
+<!-- Include headers on page -->
 <?php include '../components/admin_header.php'; ?>
 
+<!-- Fields to Update and Display Logo -->
 <section class="add-products">
 
     <h1 class="heading">Update Store Logo</h1>
-
-    <?php
-    if (isset($message)) {
-        foreach ($message as $msg) {
-            echo '<div class="message"><span>' . htmlspecialchars($msg) . '</span><i class="fas fa-times" onclick="this.parentElement.remove();"></i></div>';
-        }
-    }
-    ?>
 
     <div class="box-container">
         <div class="box">
@@ -88,8 +95,10 @@ $current_logo = $select_logo->fetch(PDO::FETCH_ASSOC)['logo'];
 
 </section>
 
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
    document.querySelector('.profile').classList.toggle('active');

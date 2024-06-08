@@ -1,15 +1,29 @@
+<!--
+    Name:               Louwrens Költzow
+    Student Number:     V9T2LDZZ1
+    Campus:             Pretoria
+    Module:             ITECA3-B12: Project Final
+ -->
+
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
+// Check Admin Authenticaiton
 if (!isset($_SESSION['admin_id'])) {
     header('location:admin_login.php');
     exit();
 }
 
+// Retrieves Admin ID
 $admin_id = $_SESSION['admin_id'];
 
-// Handle add category request
+// Handle Add requests
 if (isset($_POST['add_category'])) {
     $category_name = filter_var($_POST['category_name'], FILTER_SANITIZE_STRING);
     $category_description = filter_var($_POST['category_description'], FILTER_SANITIZE_STRING);
@@ -22,7 +36,7 @@ if (isset($_POST['add_category'])) {
     }
 }
 
-// Handle delete category request
+// Handles Delete Request
 if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
     $delete_category = $conn->prepare("DELETE FROM `categories` WHERE id = ?");
@@ -30,10 +44,11 @@ if (isset($_GET['delete'])) {
     header('location:category.php');
 }
 
-// Fetch categories
+// Fetch Categories
 $select_categories = $conn->prepare("SELECT * FROM `categories`");
 $select_categories->execute();
 $categories = $select_categories->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -54,15 +69,16 @@ $categories = $select_categories->fetchAll(PDO::FETCH_ASSOC);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Manage Categories</title>
 
-    <!-- Font Awesome CDN link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <!-- Custom CSS file link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
 
+<!-- Include headers on page -->
 <?php include '../components/admin_header.php'; ?>
 
+<!-- Display and Add Categories -->
 <section class="add-products">
 
     <h1 class="heading">Manage Categories</h1>
@@ -104,8 +120,10 @@ $categories = $select_categories->fetchAll(PDO::FETCH_ASSOC);
 
 </section>
 
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
    document.querySelector('.profile').classList.toggle('active');

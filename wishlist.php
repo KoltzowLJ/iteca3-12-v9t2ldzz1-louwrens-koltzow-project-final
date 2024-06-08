@@ -1,25 +1,40 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
+
 <?php
 
+// Include Database Connection
 include 'components/connect.php';
 
+// Start Session
 session_start();
 
-if(isset($_SESSION['user_id'])){
-   $user_id = $_SESSION['user_id'];
-}else{
-   $user_id = '';
-   header('location:user_login.php');
-   exit();
-};
+// Check User Authenticaiton
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+} else {
+    $user_id = '';
+    header('location:user_login.php');
+    exit();
+}
 
+// Include Wishlist and Cart
 include 'components/wishlist_cart.php';
 
+// Handles Delete Requests
 if(isset($_POST['delete'])){
    $wishlist_id = $_POST['wishlist_id'];
    $delete_wishlist_item = $conn->prepare("DELETE FROM `wishlist` WHERE id = ?");
    $delete_wishlist_item->execute([$wishlist_id]);
 }
 
+// Handles Delete Requests
 if(isset($_GET['delete_all'])){
    $delete_wishlist_item = $conn->prepare("DELETE FROM `wishlist` WHERE user_id = ?");
    $delete_wishlist_item->execute([$user_id]);
@@ -48,17 +63,17 @@ if(isset($_GET['delete_all'])){
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Wishlist</title>
    
-   <!-- font awesome cdn link  -->
+    <!-- Custom CSS file link -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-   <!-- custom css file link  -->
    <link rel="stylesheet" href="assets/css/styles.css">
 
 </head>
 <body>
    
+<!-- Include headers on page -->
 <?php include 'components/user_header.php'; ?>
 
+<!-- Display Products Added -->
 <section class="products">
 
    <h3 class="heading">Your Wishlist</h3>
@@ -84,6 +99,8 @@ if(isset($_GET['delete_all'])){
       <div class="flex">
          <div class="price">R<?= htmlspecialchars($fetch_wishlist['price']); ?>/-</div>
       </div>
+      <a href="product_view_detail.php?pid=<?= htmlspecialchars($unique_product['id']); ?>" class="fas fa-eye"></a>
+      <input type="number" name="qty" class="qty" min="1" max="99" onkeypress="if(this.value.length == 2) return false;" value="1">
       <input type="submit" value="Add to Cart" class="btn" name="add_to_cart">
       <input type="submit" value="Delete Item" onclick="return confirm('Delete this from wishlist?');" class="option-btn" name="delete">
    </form>
@@ -103,9 +120,12 @@ if(isset($_GET['delete_all'])){
 
 </section>
 
+<!-- Include Footer -->
 <?php include 'components/footer.php'; ?>
 
+<!-- Include JavaScript -->
 <script src="assets/js/script.js"></script>
+
 
 </body>
 </html>

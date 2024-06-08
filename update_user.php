@@ -1,8 +1,20 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include 'components/connect.php';
 
+// Start Session
 session_start();
 
+// Check User Authenticaiton
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 } else {
@@ -11,6 +23,7 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Handles Update Requests
 if (isset($_POST['submit'])) {
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -18,7 +31,7 @@ if (isset($_POST['submit'])) {
     $new_pass = filter_var($_POST['new_pass'], FILTER_SANITIZE_STRING);
     $cpass = filter_var($_POST['cpass'], FILTER_SANITIZE_STRING);
 
-    // Fetch current password from database
+    // Fetch Password From Databsae
     $select_old_pass = $conn->prepare("SELECT password FROM `users` WHERE id = ?");
     $select_old_pass->execute([$user_id]);
     $fetch_old_pass = $select_old_pass->fetch(PDO::FETCH_ASSOC);
@@ -63,16 +76,16 @@ if (isset($_POST['submit'])) {
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Update Profile</title>
    
-   <!-- Font Awesome CDN link -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
    <!-- Custom CSS file link -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
    
+<!-- Include headers on page -->
 <?php include 'components/user_header.php'; ?>
 
+<!-- Include headers on page -->
 <section class="form-container">
    <form action="" method="post">
       <h3>Update Now</h3>
@@ -92,9 +105,12 @@ if (isset($_POST['submit'])) {
    </form>
 </section>
 
+<!-- Include Footer -->
 <?php include 'components/footer.php'; ?>
 
+<!-- Include JavaScript -->
 <script src="assets/js/script.js"></script>
+
 
 </body>
 </html>

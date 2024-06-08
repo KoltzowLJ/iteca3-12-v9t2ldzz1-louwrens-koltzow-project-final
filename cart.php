@@ -1,8 +1,20 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include 'components/connect.php';
 
+// Start Session
 session_start();
 
+// Check User Authenticaiton
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 } else {
@@ -11,12 +23,14 @@ if (isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Handle Delete Request
 if (isset($_POST['delete'])) {
     $cart_id = $_POST['cart_id'];
     $delete_cart_item = $conn->prepare("DELETE FROM `cart` WHERE id = ?");
     $delete_cart_item->execute([$cart_id]);
 }
 
+// Handle Delete Request
 if (isset($_GET['delete_all'])) {
     $delete_cart_item = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart_item->execute([$user_id]);
@@ -24,6 +38,7 @@ if (isset($_GET['delete_all'])) {
     exit();
 }
 
+// Handle Update Request
 if (isset($_POST['update_qty'])) {
     $cart_id = $_POST['cart_id'];
     $qty = filter_var($_POST['qty'], FILTER_SANITIZE_STRING);
@@ -51,14 +66,17 @@ if (isset($_POST['update_qty'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
-    <!-- Font Awesome CDN link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
     <!-- Custom CSS file link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
+
+<!-- Include headers on page -->
 <?php include 'components/user_header.php'; ?>
 
+<!-- Display Products in Cart -->
 <section class="products shopping-cart">
     <h3 class="heading">Shopping Cart</h3>
 
@@ -99,9 +117,12 @@ if (isset($_POST['update_qty'])) {
     </div>
 </section>
 
+<!-- Include Footer -->
 <?php include 'components/footer.php'; ?>
 
+<!-- Include JavaScript -->
 <script src="assets/js/script.js"></script>
+
 
 </body>
 </html>

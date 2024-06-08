@@ -1,15 +1,29 @@
+<!--
+    Name:               Louwrens Költzow
+    Student Number:     V9T2LDZZ1
+    Campus:             Pretoria
+    Module:             ITECA3-B12: Project Final
+ -->
+
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
+// Check Admin Authenticaiton
 if(!isset($_SESSION['admin_id'])){
    header('location:admin_login.php');
    exit();
 }
 
+// Retrieves Admin ID
 $admin_id = $_SESSION['admin_id'];
 
-// Handle delete request
+// Handles Delete Requests
 if(isset($_GET['delete'])){
    $delete_id = $_GET['delete'];
    $delete_admin = $conn->prepare("DELETE FROM `admins` WHERE id = ?");
@@ -37,16 +51,17 @@ if(isset($_GET['delete'])){
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Admin Accounts</title>
 
-   <!-- Font Awesome CDN link -->
+   <!-- Custom CSS file links -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-   <!-- Custom CSS file link -->
    <link rel="stylesheet" href="../assets/css/admin_styles.css">
+   
 </head>
 <body>
 
+<!-- Include headers on page -->
 <?php include '../components/admin_header.php'; ?>
 
+<!-- Display Accounts with ability to update or delete -->
 <section class="accounts">
    <h1 class="heading">Admin Accounts</h1>
    <div class="box-container">
@@ -80,8 +95,11 @@ if(isset($_GET['delete'])){
    </div>
 </section>
 
+
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
    document.querySelector('.profile').classList.toggle('active');

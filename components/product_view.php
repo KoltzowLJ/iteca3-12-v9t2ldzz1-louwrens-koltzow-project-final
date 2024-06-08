@@ -1,5 +1,14 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
 
+// ProductView Class to See All Information of the Product
 class ProductView {
 
     private $conn;

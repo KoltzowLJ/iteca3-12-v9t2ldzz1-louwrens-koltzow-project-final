@@ -1,14 +1,29 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
+// Check Admin Authenticaiton
 if (!isset($_SESSION['admin_id'])) {
     header('location:admin_login.php');
     exit();
 }
 
+// Retrieves Admin ID
 $admin_id = $_SESSION['admin_id'];
 
+// Handles Get Requests
 if (isset($_GET['edit'])) {
     $edit_id = $_GET['edit'];
     $select_category = $conn->prepare("SELECT * FROM `categories` WHERE id = ?");
@@ -24,7 +39,7 @@ if (isset($_GET['edit'])) {
     exit();
 }
 
-// Handle update category request
+// Handles Update Requests
 if (isset($_POST['update_category'])) {
     $cid = $_POST['cid'];
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
@@ -55,25 +70,18 @@ if (isset($_POST['update_category'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Update Category</title>
 
-    <!-- Font Awesome CDN link -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <!-- Custom CSS file link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
 
+<!-- Include headers on page -->
 <?php include '../components/admin_header.php'; ?>
 
+<!-- Display Fields to Update Category -->
 <section class="update-product">
     <h1 class="heading">Update Category</h1>
-
-    <?php
-    if (isset($message)) {
-        foreach ($message as $msg) {
-            echo '<div class="message"><span>' . htmlspecialchars($msg) . '</span><i class="fas fa-times" onclick="this.parentElement.remove();"></i></div>';
-        }
-    }
-    ?>
 
     <form action="" method="post">
         <input type="hidden" name="cid" value="<?= htmlspecialchars($fetch_category['id']); ?>">
@@ -88,8 +96,10 @@ if (isset($_POST['update_category'])) {
     </form>
 </section>
 
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
    document.querySelector('.profile').classList.toggle('active');

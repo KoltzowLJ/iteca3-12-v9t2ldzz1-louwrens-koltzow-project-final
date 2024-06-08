@@ -1,9 +1,20 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
 
+// Include Database Connection
 include 'components/connect.php';
 
+// Start Session
 session_start();
 
+// Check User Authenticaiton
 if(isset($_SESSION['user_id'])){
    $user_id = $_SESSION['user_id'];
 }else{
@@ -31,13 +42,16 @@ if(isset($_SESSION['user_id'])){
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>About</title>
 
+   <!-- Custom CSS file link -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
    
+<!-- Include headers on page -->
 <?php include 'components/user_header.php'; ?>
 
+<!-- Display Information About The Company -->
 <section class="about">
    <h3 class="heading">About Us</h3>
    <div class="about-content">
@@ -54,9 +68,12 @@ if(isset($_SESSION['user_id'])){
    <a href="contact.php" class="btn">Contact Us</a>
 </section>
 
+<!-- Include Footer -->
 <?php include 'components/footer.php'; ?>
 
+<!-- Include JavaScript -->
 <script src="assets/js/script.js"></script>
+
 
 </body>
 </html>

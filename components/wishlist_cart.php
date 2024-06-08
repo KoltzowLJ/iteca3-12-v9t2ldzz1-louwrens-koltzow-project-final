@@ -1,5 +1,14 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
 
+// Handle Update Requests
 if (isset($_POST['add_to_wishlist'])) {
 
     if ($user_id == '') {
@@ -22,9 +31,9 @@ if (isset($_POST['add_to_wishlist'])) {
         $check_cart_numbers->execute([$name, $user_id]);
 
         if ($check_wishlist_numbers->rowCount() > 0) {
-            $message[] = 'already added to wishlist!';
+            $message[] = 'Already added to wishlist!';
         } elseif ($check_cart_numbers->rowCount() > 0) {
-            $message[] = 'already added to cart!';
+            $message[] = 'Already added to cart!';
         } else {
             $insert_wishlist = $conn->prepare("INSERT INTO `wishlist`(user_id, pid, name, price, image) VALUES(?,?,?,?,?)");
             $insert_wishlist->execute([$user_id, $pid, $name, $price, $image]);
@@ -33,6 +42,7 @@ if (isset($_POST['add_to_wishlist'])) {
     }
 }
 
+// Handle Update Requests
 if (isset($_POST['add_to_cart'])) {
 
     if ($user_id == '') {
@@ -54,7 +64,7 @@ if (isset($_POST['add_to_cart'])) {
         $check_cart_numbers->execute([$name, $user_id]);
 
         if ($check_cart_numbers->rowCount() > 0) {
-            $message[] = 'already added to cart!';
+            $message[] = 'Already added to cart!';
         } else {
 
             $check_wishlist_numbers = $conn->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");

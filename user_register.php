@@ -1,15 +1,28 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
+
 <?php
+
+// Include Database Connection
 include 'components/connect.php';
 
+// Start Session
 session_start();
 
+// Handles Add Requests
 if (isset($_POST['submit'])) {
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = filter_var($_POST['pass'], FILTER_SANITIZE_STRING);
     $cpassword = filter_var($_POST['cpass'], FILTER_SANITIZE_STRING);
 
-    // Check if email already exists
+    // Check Existing Emails
     $select_user = $conn->prepare("SELECT * FROM `users` WHERE email = ?");
     $select_user->execute([$email]);
     
@@ -47,16 +60,16 @@ if (isset($_POST['submit'])) {
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Register</title>
    
-   <!-- Font Awesome CDN link -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
    <!-- Custom CSS file link -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
    
+<!-- Include headers on page -->
 <?php include 'components/user_header.php'; ?>
 
+<!-- Display Registration Form -->
 <section class="form-container">
    <form action="" method="post">
       <h3>Register Now</h3>
@@ -77,9 +90,12 @@ if (isset($_POST['submit'])) {
    </form>
 </section>
 
+<!-- Include Footer -->
 <?php include 'components/footer.php'; ?>
 
+<!-- Include JavaScript -->
 <script src="assets/js/script.js"></script>
+
 
 </body>
 </html>

@@ -1,15 +1,30 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
-if(!isset($_SESSION['admin_id'])){
-   header('location:admin_login.php');
-   exit();
+// Check Admin Authenticaiton
+if (!isset($_SESSION['admin_id'])) {
+    header('location:admin_login.php');
+    exit();
 }
 
+// Retrieves Admin ID
 $admin_id = $_SESSION['admin_id'];
 
-// Handle user account deletion
+
+// Handle Delete Requests
 if(isset($_GET['delete'])){
    $delete_id = $_GET['delete'];
    $delete_user = $conn->prepare("DELETE FROM `users` WHERE id = ?");
@@ -37,15 +52,21 @@ if(isset($_GET['delete'])){
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Users Accounts</title>
+
+   <!-- Custom CSS file link -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
 
+<!-- Include headers on page -->
 <?php include '../components/admin_header.php'; ?>
 
+<!-- Display Users and Ability to Delete User -->
 <section class="accounts">
+
    <h1 class="heading">User Accounts</h1>
+
    <div class="box-container">
       <?php
          $select_users = $conn->prepare("SELECT * FROM `users`");
@@ -68,8 +89,10 @@ if(isset($_GET['delete'])){
    </div>
 </section>
 
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
    document.querySelector('.profile').classList.toggle('active');

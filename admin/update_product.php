@@ -1,14 +1,29 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
+// Check Admin Authenticaiton
 if (!isset($_SESSION['admin_id'])) {
     header('location:admin_login.php');
     exit();
 }
 
+// Retrieves Admin ID
 $admin_id = $_SESSION['admin_id'];
 
+// Handles Get Requests
 if (isset($_GET['update'])) {
     $update_id = $_GET['update'];
     $select_products = $conn->prepare("SELECT * FROM `products` WHERE id = ?");
@@ -24,7 +39,7 @@ if (isset($_GET['update'])) {
     exit();
 }
 
-// Handle update request
+// Handles Update Requests
 if (isset($_POST['update'])) {
     $pid = $_POST['pid'];
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
@@ -39,7 +54,7 @@ if (isset($_POST['update'])) {
     $old_image_02 = $_POST['old_image_02'];
     $old_image_03 = $_POST['old_image_03'];
 
-    // Function to handle image upload
+    // Function to Handle Images
     function upload_image($image_name, $image_tmp_name, $image_folder, $old_image, $pid, $conn, $field_name) {
         if (!empty($image_name)) {
             $unique_suffix = time() . '_' . uniqid();
@@ -66,7 +81,9 @@ if (isset($_POST['update'])) {
     upload_image($_FILES['image_03']['name'], $_FILES['image_03']['tmp_name'], $image_folder, $old_image_03, $pid, $conn, 'image_03');
 
     $message[] = 'Product updated successfully!';
-    header("Refresh:0"); // Reload the page to reflect changes
+
+    // Reload the Page to Reflect Changes Immediatly
+    header("Refresh:0"); 
 }
 ?>
 
@@ -87,23 +104,19 @@ if (isset($_POST['update'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Product</title>
+
+    <!-- Custom CSS file link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
 
+<!-- Include headers on page -->
 <?php include '../components/admin_header.php'; ?>
 
+<!-- Display Fields to Update Products -->
 <section class="update-product">
     <h1 class="heading">Update Product</h1>
-
-    <?php
-    if (isset($message)) {
-        foreach ($message as $msg) {
-            echo '<p class="message">' . htmlspecialchars($msg) . '</p>';
-        }
-    }
-    ?>
 
     <form action="" method="post" enctype="multipart/form-data">
         <input type="hidden" name="pid" value="<?= htmlspecialchars($fetch_products['id']); ?>">
@@ -159,11 +172,13 @@ if (isset($_POST['update'])) {
     </form>
 </section>
 
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
-    document.querySelector('.profile').classList.toggle('active');
+   document.querySelector('.profile').classList.toggle('active');
 });
 </script>
 

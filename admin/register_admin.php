@@ -1,17 +1,32 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
+
+// Include Database Connection
 include '../components/connect.php';
+
+// Start Session
 session_start();
 
+// Check Admin Authenticaiton
 if (!isset($_SESSION['admin_id'])) {
     header('location:admin_login.php');
     exit();
 }
 
+// Retrieves Admin ID
 $admin_id = $_SESSION['admin_id'];
 
 // Initialize the $message array
 $message = [];
 
+// Handles Add Requests
 if (isset($_POST['submit'])) {
     $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
     $pass = filter_var($_POST['pass'], FILTER_SANITIZE_STRING);
@@ -55,13 +70,17 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Register Admin</title>
+
+    <!-- Custom CSS file link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
 
+<!-- Include headers on page -->
 <?php include '../components/admin_header.php'; ?>
 
+<!-- Form to Register New Admins -->
 <section class="form-container">
     <form action="" method="post">
         <h3>Register Now</h3>
@@ -79,11 +98,13 @@ if (isset($_POST['submit'])) {
     </form>
 </section>
 
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
-    document.querySelector('.profile').classList.toggle('active');
+   document.querySelector('.profile').classList.toggle('active');
 });
 </script>
 

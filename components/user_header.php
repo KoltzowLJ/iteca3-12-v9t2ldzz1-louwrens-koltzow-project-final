@@ -1,10 +1,38 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
-// Fetch store logo from the database
+
+// Initialize the variable as an array
+if (!isset($message)) {
+    $message = [];
+}
+
+// Display messages
+if (!empty($message)) {
+    foreach ($message as $msg) {
+        echo '
+        <div class="message">
+            <span>' . htmlspecialchars($msg) . '</span>
+            <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+        </div>
+        ';
+    }
+}
+
+
+// Fetch Store Logo
 $store_logo_query = $conn->prepare("SELECT logo FROM store_settings WHERE id = 1");
 $store_logo_query->execute();
 $store_logo = $store_logo_query->fetch(PDO::FETCH_ASSOC)['logo'];
 ?>
 
+<!-- Header Section -->
 <header class="header">
     <section class="flex">
         <a href="index.php" class="logo"><img src="assets/store_logo/<?= htmlspecialchars($store_logo); ?>" alt="SimplicityTech"></a>
@@ -20,7 +48,7 @@ $store_logo = $store_logo_query->fetch(PDO::FETCH_ASSOC)['logo'];
         <div class="icons">
             <?php
             try {
-                // Fetch wishlist and cart counts
+                // Fetch Wishlist and Cart Count
                 if (isset($user_id) && !empty($user_id)) {
                     $count_wishlist_items = $conn->prepare("SELECT * FROM `wishlist` WHERE user_id = ?");
                     $count_wishlist_items->execute([$user_id]);
@@ -44,6 +72,7 @@ $store_logo = $store_logo_query->fetch(PDO::FETCH_ASSOC)['logo'];
             <a href="#" id="user-btn"><i class="fas fa-user"></i></a>
         </div>
 
+        <!-- User Profile Button Actions -->
         <div class="profile">
             <?php
             if (isset($user_id) && !empty($user_id)) {
@@ -55,10 +84,10 @@ $store_logo = $store_logo_query->fetch(PDO::FETCH_ASSOC)['logo'];
                     echo '<a href="update_user.php" class="btn">Update Profile</a>';
                     echo '<a href="components/user_logout.php" class="delete-btn" onclick="return confirm(\'Logout from the website?\');">Logout</a>';
                 } else {
-                    echo '<p>Please login or register first!</p>';
+                    echo '<p>Please Login or Register</p>';
                 }
             } else {
-                echo '<p>Please login or register first!</p>';
+                echo '<p>Please Login or Register</p>';
                 echo '<div class="flex-btn">
                       <a href="user_register.php" class="option-btn">Register</a>
                       <a href="user_login.php" class="option-btn">Login</a>
@@ -69,6 +98,7 @@ $store_logo = $store_logo_query->fetch(PDO::FETCH_ASSOC)['logo'];
     </section>
 </header>
 
+<!-- Ability to Toggle User Profile Button -->
 <script>
 function toggleProfile() {
     const profile = document.querySelector('.profile');
