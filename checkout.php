@@ -60,6 +60,29 @@ if(isset($_POST['order'])) {
    $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
    $delete_cart->execute([$user_id]);
 
+   try {
+      // Email Sent To User 
+      $to = $email;
+      $subject = "Order Confirmation - SimplicityTech";
+      $body = "Hello $name,\n\nThank you for your order. We have received your order and it is being processed.\n\nOrder Details:\n$total_products\n\nTotal Price: $total_price\n\nBest Regards,\nSimplicityTech Team";
+      $headers = "From: no-reply@simplicitytech.co.za";
+
+      // Email Sent To Company
+      $admin_email = "no-reply@simplicitytech.co.za";
+      $admin_subject = "New Order Received";
+      $admin_body = "Name: $name\nEmail: $email\nNumber: $number\nOrder Details: $total_products\nTotal Price: R $total_price";
+      $admin_headers = "From: $email";
+
+      if(mail($to, $subject, $body, $headers) && mail($admin_email, $admin_subject, $admin_body, $admin_headers)){
+          $message[] = 'Your order has been placed successfully and a confirmation email has been sent!';
+      } else {
+          $message[] = 'Order placed but failed to send confirmation email. Please contact support.';
+      }
+  } catch (PDOException $e) {
+      $message[] = 'Order placed but failed to send confirmation email. Please contact support.';
+  }
+
+
    $message[] = 'Order placed successfully!';
 }
 ?>

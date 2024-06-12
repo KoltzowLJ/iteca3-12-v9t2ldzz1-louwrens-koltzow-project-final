@@ -49,6 +49,9 @@ $get_unique_products->execute();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 
+    <!-- Website Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+
     <!-- Custom CSS file link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
