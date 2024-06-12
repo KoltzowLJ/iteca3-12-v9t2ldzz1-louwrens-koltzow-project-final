@@ -102,7 +102,7 @@ if(isset($_GET['delete_all'])){
       <div class="flex">
          <div class="price">R<?= htmlspecialchars($fetch_wishlist['price']); ?>/-</div>
       </div>
-      <a href="product_view_detail.php?pid=<?= htmlspecialchars($unique_product['id']); ?>" class="fas fa-eye"></a>
+      <a href="product_view_detail.php?pid=<?= htmlspecialchars($fetch_wishlist['pid']); ?>" class="fas fa-eye"></a>
       <input type="number" name="qty" class="qty" min="1" max="99" onkeypress="if(this.value.length == 2) return false;" value="1">
       <input type="submit" value="Add to Cart" class="btn" name="add_to_cart">
       <input type="submit" value="Delete Item" onclick="return confirm('Delete this from wishlist?');" class="option-btn" name="delete">

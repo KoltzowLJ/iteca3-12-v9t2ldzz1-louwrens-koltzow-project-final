@@ -92,7 +92,7 @@ if (isset($_POST['update_qty'])) {
         ?>
         <form action="" method="post" class="box">
             <input type="hidden" name="cart_id" value="<?= htmlspecialchars($fetch_cart['id']); ?>">
-            <a href="quick_view.php?pid=<?= htmlspecialchars($fetch_cart['pid']); ?>" class="fas fa-eye"></a>
+            <a href="product_view_detail.php?pid=<?= htmlspecialchars($fetch_cart['pid']); ?>" class="fas fa-eye"></a>
             <img src="assets/uploaded_images/<?= htmlspecialchars($fetch_cart['image']); ?>" alt="<?= htmlspecialchars($fetch_cart['name']); ?>">
             <div class="name"><?= htmlspecialchars($fetch_cart['name']); ?></div>
             <div class="price">R<?= htmlspecialchars($fetch_cart['price']); ?></div>
