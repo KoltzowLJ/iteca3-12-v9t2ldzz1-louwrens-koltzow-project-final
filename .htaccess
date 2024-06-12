@@ -1,0 +1,7 @@
+AuthType Basic
+AuthName "Restricted Area"
+AuthUserFile /assets/resources/.htpasswd
+Require valid-user
+
+# Custom 404 Error Page
+ErrorDocument 404 /404.php

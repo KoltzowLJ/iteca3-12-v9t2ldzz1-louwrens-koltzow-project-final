@@ -1,63 +1,100 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
+<?php
+// Include Database Connection
+include '../components/connect.php';
+
+// Start Session
+session_start();
+
+// Check Admin Authenticaiton
+if (!isset($_SESSION['admin_id'])) {
+    header('location:admin_login.php');
+    exit();
+}
+
+// Retrieves Admin ID
+$admin_id = $_SESSION['admin_id'];
+
+// Handles Delete Requests
+if(isset($_GET['delete'])){
+   $delete_id = $_GET['delete'];
+   $delete_message = $conn->prepare("DELETE FROM `messages` WHERE id = ?");
+   $delete_message->execute([$delete_id]);
+   header('location:messages.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+   
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJVLZYDW1W"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-WJVLZYDW1W');
+    </script>
+
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Messages</title>
    
-   <!-- Font Awesome CDN link -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
    <!-- Custom CSS file link -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
    <link rel="stylesheet" href="../assets/css/admin_styles.css">
 </head>
 <body>
 
+<!-- Include headers on page -->
 <?php include '../components/admin_header.php'; ?>
 
+<!-- Display Messages with Ability To Delete -->
 <section class="contacts">
 
    <h1 class="heading">Messages</h1>
 
    <div class="box-container">
 
-      <!-- Example Message 1 -->
+      <?php
+      $select_messages = $conn->prepare("SELECT * FROM `messages`");
+      $select_messages->execute();
+      if($select_messages->rowCount() > 0){
+         while($fetch_message = $select_messages->fetch(PDO::FETCH_ASSOC)){
+      ?>
       <div class="box">
-         <p> user id : <span>1</span></p>
-         <p> name : <span>John Doe</span></p>
-         <p> email : <span>johndoe@example.com</span></p>
-         <p> number : <span>1234567890</span></p>
-         <p> message : <span>Hello, I have a question about...</span></p>
-         <a href="messages.php?delete=1" onclick="return confirm('delete this message?');" class="delete-btn">Delete</a>
+         <p> user id : <span><?= $fetch_message['user_id']; ?></span></p>
+         <p> name : <span><?= $fetch_message['name']; ?></span></p>
+         <p> email : <span><?= $fetch_message['email']; ?></span></p>
+         <p> number : <span><?= $fetch_message['number']; ?></span></p>
+         <p> message : <span><?= $fetch_message['message']; ?></span></p>
+         <a href="messages.php?delete=<?= $fetch_message['id']; ?>" onclick="return confirm('delete this message?');" class="delete-btn">Delete</a>
       </div>
-
-      <!-- Example Message 2 -->
-      <div class="box">
-         <p> user id : <span>2</span></p>
-         <p> name : <span>Jane Smith</span></p>
-         <p> email : <span>janesmith@example.com</span></p>
-         <p> number : <span>0987654321</span></p>
-         <p> message : <span>I need help with my order...</span></p>
-         <a href="messages.php?delete=2" onclick="return confirm('delete this message?');" class="delete-btn">Delete</a>
-      </div>
-
-      <!-- Example Message 3 -->
-      <div class="box">
-         <p> user id : <span>3</span></p>
-         <p> name : <span>Mike Johnson</span></p>
-         <p> email : <span>mikejohnson@example.com</span></p>
-         <p> number : <span>1122334455</span></p>
-         <p> message : <span>Can you provide more details about...</span></p>
-         <a href="messages.php?delete=3" onclick="return confirm('delete this message?');" class="delete-btn">Delete</a>
-      </div>
+      <?php
+         }
+      } else {
+         echo '<p class="empty">No messages available!</p>';
+      }
+      ?>
 
    </div>
 
 </section>
 
+<!-- Include JavaScript -->
 <script src="../assets/js/admin_script.js"></script>
 
+<!-- EventListener for Profile Button -->
 <script>
 document.getElementById('user-btn').addEventListener('click', function() {
    document.querySelector('.profile').classList.toggle('active');

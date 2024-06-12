@@ -1,16 +1,32 @@
+<!--
+    Name:       Louwrens Költzow
+    Student     Number: V9T2LDZZ1
+    Campus:     Pretoria
+    Module:     ITECA3-B12: Project Final
+ -->
+    
+
 <?php
-   if(isset($message)){
-      foreach($message as $message){
-         echo '
-         <div class="message">
-            <span>'.$message.'</span>
+
+// Initialize variable as an array
+if (!isset($message)) {
+    $message = [];
+}
+
+// Display Messages
+if (!empty($message)) {
+    foreach ($message as $msg) {
+        echo '
+        <div class="message">
+            <span>' . htmlspecialchars($msg) . '</span>
             <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-         </div>
-         ';
-      }
-   }
+        </div>
+        ';
+    }
+}
 ?>
 
+<!-- Header Section -->
 <header class="header">
    <section class="flex">
 
@@ -23,6 +39,8 @@
          <a href="../admin/admin_accounts.php">Admins</a>
          <a href="../admin/users_accounts.php">Users</a>
          <a href="../admin/messages.php">Messages</a>
+         <a href="../admin/update_category.php">Categories</a>
+         <a href="../admin/update_store_logo.php">Store Logo</a>
       </nav>
 
       <div class="icons">
